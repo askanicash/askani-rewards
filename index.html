@@ -1,198 +1,283 @@
+# Askani Cash - Complete Earning Script
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Askani Cash - PTC Platform</title>
+    <title>Askani Cash - Earn Online</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
-        body { background: #0f172a; color: #f8fafc; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
-        .container { background: #1e293b; padding: 30px; border-radius: 12px; width: 100%; max-width: 450px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); text-align: center; }
-        h2 { margin-bottom: 20px; color: #38bdf8; }
-        input, select { width: 100%; padding: 12px; margin: 10px 0; border-radius: 6px; border: 1px solid #475569; background: #334155; color: white; font-size: 16px; }
-        button { width: 100%; padding: 12px; background: #0284c7; border: none; color: white; font-size: 16px; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 10px; transition: 0.2s; }
-        button:hover { background: #0369a1; }
-        .link { margin-top: 15px; font-size: 14px; color: #94a3b8; cursor: pointer; display: inline-block; text-decoration: underline; }
-        .link:hover { color: #38bdf8; }
-        .hidden { display: none !important; }
-        
-        /* Dashboard & Custom Styles */
-        .stats-box { background: #334155; padding: 15px; border-radius: 8px; margin: 15px 0; font-size: 18px; font-weight: bold; color: #4ade80; }
-        .ad-card { background: #1e293b; border: 2px solid #475569; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: left; }
-        .ad-title { font-weight: bold; font-size: 16px; color: #f8fafc; }
-        .ad-reward { color: #38bdf8; font-size: 14px; margin-top: 5px; }
-        .timer { font-weight: bold; color: #f43f5e; margin-top: 5px; text-align: center; }
-        .nav-btn { background: #10b981; margin-bottom: 10px; }
-        .nav-btn:hover { background: #059669; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+
+            border-radius: 1.5rem;
+        }
+        .btn-gradient {
+            background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+        }
+        .hidden-section { display: none; }
+        .timer-active { pointer-events: none; opacity: 0.6; }
     </style>
 </head>
-<body>
+<body class="p-4 md:p-8">
 
-<div class="container">
-    <!-- 1. LOGIN SCREEN -->
-    <div id="login-screen">
-        <h2>Askani Cash Login</h2>
-        <input type="email" id="login-email" placeholder="Enter Email">
-        <input type="password" id="login-pass" placeholder="Enter Password">
-        <button id="btn-login">Sign In</button>
-        <br>
-        <span class="link" id="link-to-register">Create an Account (Register)</span>
-    </div>
+    <!-- Auth Section (Login/Signup) -->
+    <div id="auth-section" class="max-w-md mx-auto mt-10">
+        <div class="glass p-8 text-center">
 
-    <!-- 2. REGISTER SCREEN -->
-    <div id="register-screen" class="hidden">
-        <h2>Create Account</h2>
-        <input type="email" id="reg-email" placeholder="Enter Email">
-        <input type="password" id="reg-pass" placeholder="Enter Password">
-        <button id="btn-register">Register Now</button>
-        <br>
-        <span class="link" id="link-to-login">Already have an account? Login</span>
-    </div>
-
-    <!-- 3. PTC DASHBOARD SCREEN -->
-    <div id="dashboard-screen" class="hidden">
-        <h2>Welcome to Dashboard</h2>
-        <p id="user-display" style="color: #94a3b8; font-size: 14px; margin-bottom: 10px;"></p>
-        
-        <div class="stats-box">
-            Your Balance: <span id="balance">0.00</span> PKR
-        </div>
-
-        <button class="nav-btn" id="btn-goto-withdraw">💸 Withdraw Money</button>
-
-        <h3 style="margin-top: 20px; text-align: left; color: #38bdf8;">Available Ads To Click</h3>
-        
-        <div id="ads-container">
-            <!-- Ad 1 -->
-            <div class="ad-card" id="ad1">
-                <div class="ad-title">Earn Money Online - Ad #1</div>
-                <div class="ad-reward">Reward: 5.00 PKR | Duration: 10 Sec</div>
-                <button id="btn-ad1">Watch Ad</button>
-                <div id="timer-ad1" class="timer hidden">Watching: <span id="count-ad1">10</span>s</div>
+            <h1 class="text-3xl font-bold mb-6 text-blue-400">Askani Cash</h1>
+            
+            <div id="login-form">
+                <h2 class="text-xl mb-4">Login</h2>
+                <input type="text" id="login-user" placeholder="Username" class="w-full p-3 mb-3 rounded-lg bg-slate-800 border border-slate-700 focus:outline-none focus:border-blue-500">
+                <input type="password" id="login-pass" placeholder="Password" class="w-full p-3 mb-6 rounded-lg bg-slate-800 border border-slate-700 focus:outline-none focus:border-blue-500">
+                <button onclick="handleLogin()" class="w-full btn-gradient p-3 rounded-lg font-bold">Sign In</button>
+                <p class="mt-4 text-sm text-slate-400">Account nahi hai? <a href="#" onclick="toggleAuth(false)" class="text-blue-400 underline">Create Account</a></p>
             </div>
 
-            <!-- Ad 2 -->
-            <div class="ad-card" id="ad2">
-                <div class="ad-title">Best Crypto Trading - Ad #2</div>
-                <div class="ad-reward">Reward: 10.00 PKR | Duration: 15 Sec</div>
-                <button id="btn-ad2">Watch Ad</button>
-                <div id="timer-ad2" class="timer hidden">Watching: <span id="count-ad2">15</span>s</div>
-            </div>
-
-            <!-- Ad 3 -->
-            <div class="ad-card" id="ad3">
-                <div class="ad-title">Work From Home Jobs - Ad #3</div>
-                <div class="ad-reward">Reward: 15.00 PKR | Duration: 20 Sec</div>
-                <button id="btn-ad3">Watch Ad</button>
-                <div id="timer-ad3" class="timer hidden">Watching: <span id="count-ad3">20</span>s</div>
+            <div id="signup-form" class="hidden-section">
+                <h2 class="text-xl mb-4">Create Account</h2>
+                <input type="text" id="reg-user" placeholder="Username" class="w-full p-3 mb-3 rounded-lg bg-slate-800 border border-slate-700">
+                <input type="password" id="reg-pass" placeholder="Password" class="w-full p-3 mb-3 rounded-lg bg-slate-800 border border-slate-700">
+                <input type="text" id="reg-ref" placeholder="Referral Code (Optional)" class="w-full p-3 mb-6 rounded-lg bg-slate-800 border border-slate-700">
+                <button onclick="handleSignup()" class="w-full btn-gradient p-3 rounded-lg font-bold">Sign Up</button>
+                <p class="mt-4 text-sm text-slate-400">Pehle se account hai? <a href="#" onclick="toggleAuth(true)" class="text-blue-400 underline">Login</a></p>
             </div>
         </div>
 
-        <button id="btn-logout" style="background: #475569; margin-top: 20px;">Logout</button>
     </div>
 
-    <!-- 4. WITHDRAW SCREEN -->
-    <div id="withdraw-screen" class="hidden">
-        <h2>Withdraw Earnings</h2>
-        <p style="color: #94a3b8; font-size: 14px; margin-bottom: 15px;">Minimum Withdraw Limit: 100 PKR</p>
-        
-        <select id="withdraw-method">
-            <option value="EasyPaisa">EasyPaisa</option>
-            <option value="JazzCash">JazzCash</option>
-            <option value="FaucetPay">FaucetPay (Crypto Wallet)</option>
-        </select>
-        
-        <input type="text" id="withdraw-account" placeholder="Account Number (e.g. 03xxxxxxxxx)">
-        <input type="text" id="withdraw-name" placeholder="Account Title Name">
-        <input type="number" id="withdraw-amount" placeholder="Enter Amount in PKR">
-        
-        <button id="btn-submit-withdraw" style="background: #e11d48;">Submit Withdraw Request</button>
-        <button id="btn-back-dashboard" style="background: #475569; margin-top: 10px;">Back to Dashboard</button>
+    <!-- Main Dashboard Section -->
+    <div id="dashboard-section" class="max-w-4xl mx-auto hidden-section">
+        <!-- Header Info -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div class="glass p-6 text-center">
+                <p class="text-slate-400 text-sm">Welcome,</p>
+                <h3 id="display-name" class="text-xl font-bold">User</h3>
+            </div>
+            <div class="glass p-6 text-center border-b-4 border-blue-500">
+                <p class="text-slate-400 text-sm">Total Balance</p>
+                <h3 class="text-3xl font-bold">PKR <span id="balance">0</span></h3>
+            </div>
+            <div class="glass p-6 text-center">
+                <p class="text-slate-400 text-sm">Referral Code</p>
+                <h3 id="my-ref-code" class="text-lg font-mono text-blue-300">ABC123</h3>
+            </div>
+        </div>
+
+
+        <!-- Navigation Tabs -->
+        <div class="flex justify-center gap-4 mb-8">
+            <button onclick="showTab('tasks')" class="px-6 py-2 rounded-full glass border-blue-500 text-blue-400">Tasks</button>
+            <button onclick="showTab('withdraw')" class="px-6 py-2 rounded-full glass">Withdraw</button>
+            <button onclick="logout()" class="px-6 py-2 rounded-full bg-red-900/30 text-red-400">Logout</button>
+        </div>
+
+        <!-- Tasks Tab -->
+        <div id="tab-tasks" class="tab-content">
+            <h2 class="text-2xl font-bold mb-6 text-center">Daily Tasks (10 Ads)</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4" id="ads-container">
+                <!-- Ad buttons will be generated by JS -->
+            </div>
+        </div>
+
+        <!-- Withdraw Tab -->
+        <div id="tab-withdraw" class="tab-content hidden-section">
+            <div class="max-w-md mx-auto glass p-8">
+                <h2 class="text-2xl font-bold mb-6 text-center">Withdrawal</h2>
+
+                <p class="text-sm text-slate-400 mb-6 text-center">Minimum Withdrawal: 100 PKR</p>
+                
+                <div class="space-y-4">
+                    <select id="pay-method" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700">
+                        <option value="EasyPaisa">EasyPaisa</option>
+                        <option value="JazzCash">JazzCash</option>
+                        <option value="SadaPay">SadaPay</option>
+                        <option value="FaucetPay">FaucetPay</option>
+                        <option value="Bank Account">Bank Transfer</option>
+                    </select>
+                    <input type="text" id="pay-number" placeholder="Account Number" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700">
+                    <input type="text" id="pay-name" placeholder="Account Holder Name" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700">
+                    <input type="number" id="pay-amount" placeholder="Amount (PKR)" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700">
+                    
+                    <button onclick="processWithdraw()" class="w-full btn-gradient p-3 rounded-lg font-bold mt-4">Submit to WhatsApp</button>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 
-<script>
-    // Variables
-    let currentBalance = parseFloat(localStorage.getItem('ptc_balance')) || 0.00;
 
-    // Screen Swapper
-    function switchScreen(screenId) {
-        document.getElementById('login-screen').classList.add('hidden');
-        document.getElementById('register-screen').classList.add('hidden');
-        document.getElementById('dashboard-screen').classList.add('hidden');
-        document.getElementById('withdraw-screen').classList.add('hidden');
-        
-        document.getElementById(screenId).classList.remove('hidden');
-        
-        if(screenId === 'dashboard-screen') {
-            document.getElementById('balance').innerText = currentBalance.toFixed(2);
+    <script>
+        // CONFIGURATION
+        const WHATSAPP_NUMBER = "923123456789"; // Apna number yahan likhein
+        const POINTS_PER_AD = 1; // 1 point = 1 PKR
+        const REFFERAL_BONUS = 15;
+
+        // STATE
+        let currentUser = null;
+
+        // 1. Auth Logic
+        function toggleAuth(showLogin) {
+            document.getElementById('login-form').classList.toggle('hidden-section', !showLogin);
+            document.getElementById('signup-form').classList.toggle('hidden-section', showLogin);
         }
-    }
 
-    // Setup Event Listeners after page loads
-    document.addEventListener("DOMContentLoaded", function() {
-        
-        // Navigation links
-        document.getElementById('link-to-register').onclick = function() { switchScreen('register-screen'); };
-        document.getElementById('link-to-login').onclick = function() { switchScreen('login-screen'); };
-        document.getElementById('btn-goto-withdraw').onclick = function() { switchScreen('withdraw-screen'); };
-        document.getElementById('btn-back-dashboard').onclick = function() { switchScreen('dashboard-screen'); };
-        document.getElementById('btn-logout').onclick = function() { switchScreen('login-screen'); };
+        function handleSignup() {
+            const user = document.getElementById('reg-user').value;
+            const pass = document.getElementById('reg-pass').value;
+            const ref = document.getElementById('reg-ref').value;
 
-        // Register Logic
-        document.getElementById('btn-register').onclick = function() {
-            const email = document.getElementById('reg-email').value.trim();
-            const pass = document.getElementById('reg-pass').value.trim();
+
+            if(!user || !pass) return alert("Details bharain!");
             
-            if(!email || !pass) { alert("Please fill all fields!"); return; }
-            
-            localStorage.setItem('ptc_user', JSON.stringify({ email: email, pass: pass }));
-            localStorage.setItem('ptc_balance', '0.00');
-            currentBalance = 0.00;
-            alert("Account Successfully Created! Now you can login.");
-            switchScreen('login-screen');
-        };
+            let users = JSON.parse(localStorage.getItem('askani_users') || '{}');
+            if(users[user]) return alert("User pehle se hai!");
 
-        // Login Logic
-        document.getElementById('btn-login').onclick = function() {
-            const email = document.getElementById('login-email').value.trim();
-            const pass = document.getElementById('login-pass').value.trim();
-            const user = JSON.parse(localStorage.getItem('ptc_user'));
-
-            if (user && user.email === email && user.pass === pass) {
-                document.getElementById('user-display').innerText = "Logged in as: " + email;
-                switchScreen('dashboard-screen');
-            } else {
-                alert("Invalid Email or Password! Please register first.");
-            }
-        };
-
-        // Ad Functions Helper
-        function setupAd(btnId, timerId, countId, cardId, duration, reward) {
-            document.getElementById(btnId).onclick = function() {
-                document.getElementById(btnId).classList.add('hidden');
-                document.getElementById(timerId).classList.remove('hidden');
-
-                let timeLeft = duration;
-                const interval = setInterval(() => {
-                    timeLeft--;
-                    document.getElementById(countId).innerText = timeLeft;
-
-                    if (timeLeft <= 0) {
-                        clearInterval(interval);
-                        document.getElementById(timerId).classList.add('hidden');
-                        document.getElementById(cardId).innerHTML = "<p style='color: #4ade80; font-weight: bold; text-align:center;'>✓ Ad Completed! Amount Added.</p>";
-                        
-                        currentBalance += reward;
-                        localStorage.setItem('ptc_balance', currentBalance);
-                        document.getElementById('balance').innerText = currentBalance.toFixed(2);
-                    }
-                }, 1000);
+            users[user] = { 
+                password: pass, 
+                balance: ref ? REFFERAL_BONUS : 0, 
+                refCode: user + Math.floor(Math.random()*1000) 
             };
+            
+            localStorage.setItem('askani_users', JSON.stringify(users));
+            alert("Account ban gaya! Ab login karein.");
+            toggleAuth(true);
         }
 
-        setupAd('btn-ad1', 'timer-ad1', 'count-ad1', 'ad1', 10, 5);
-        setupAd('btn-ad2', 'timer-ad2', 'count-ad2', 'ad2', 15, 10);
-        setupAd('btn-ad3', 'timer-ad3', 'count-ad3', 'ad3', 20, 15);
+        function handleLogin() {
+            const user = document.getElementById('login-user').value;
+            const pass = document.getElementById('login-pass').value;
 
-        // Dynamic Placeholder change for FaucetPay
+            
+            let users = JSON.parse(localStorage.getItem('askani_users') || '{}');
+            
+            if(users[user] && users[user].password === pass) {
+                currentUser = user;
+                loadDashboard();
+            } else {
+                alert("Ghalat details!");
+            }
+        }
+
+        // 2. Dashboard Logic
+        function loadDashboard() {
+            document.getElementById('auth-section').classList.add('hidden-section');
+            document.getElementById('dashboard-section').classList.remove('hidden-section');
+            
+            const users = JSON.parse(localStorage.getItem('askani_users'));
+            const data = users[currentUser];
+            
+
+            document.getElementById('display-name').innerText = currentUser;
+            document.getElementById('balance').innerText = data.balance;
+            document.getElementById('my-ref-code').innerText = data.refCode;
+            
+            generateAds();
+        }
+
+        function showTab(tab) {
+            document.getElementById('tab-tasks').classList.toggle('hidden-section', tab !== 'tasks');
+            document.getElementById('tab-withdraw').classList.toggle('hidden-section', tab !== 'withdraw');
+        }
+
+        // 3. Ad Tasks Logic
+        function generateAds() {
+            const container = document.getElementById('ads-container');
+            container.innerHTML = '';
+            
+            for(let i = 1; i <= 10; i++) {
+                const seconds = 4 + i; // 1st ad 5s, 2nd 6s, etc.
+
+                const btn = document.createElement('button');
+                btn.className = "glass p-4 text-center hover:bg-white/10 transition flex flex-col items-center gap-2";
+                btn.id = `ad-btn-${i}`;
+                btn.innerHTML = `
+                    <span class="text-xs text-blue-300">AD #${i}</span>
+                    <span class="text-sm font-bold">${seconds}s Timer</span>
+                    <span class="text-[10px] text-green-400">+1 PKR</span>
+                `;
+                btn.onclick = () => startAd(i, seconds);
+                container.appendChild(btn);
+            }
+        }
+
+        function startAd(id, time) {
+            const btn = document.getElementById(`ad-btn-${id}`);
+            btn.classList.add('timer-active');
+            let remaining = time;
+            
+            // Link open (Replace with your actual ad links)
+
+            window.open("https://www.google.com", "_blank"); 
+
+            const interval = setInterval(() => {
+                remaining--;
+                btn.innerHTML = `<span class="text-blue-300">Wait</span> <span class="text-2xl">${remaining}</span>`;
+                
+                if(remaining <= 0) {
+                    clearInterval(interval);
+                    addBalance(POINTS_PER_AD);
+                    btn.innerHTML = `<span class="text-green-400">DONE ✅</span>`;
+                    btn.classList.remove('timer-active');
+                    btn.onclick = null;
+                }
+            }, 1000);
+        }
+
+        function addBalance(amt) {
+            let users = JSON.parse(localStorage.getItem('askani_users'));
+            users[currentUser].balance += amt;
+
+            localStorage.setItem('askani_users', JSON.stringify(users));
+            document.getElementById('balance').innerText = users[currentUser].balance;
+        }
+
+        // 4. Withdrawal Logic
+        function processWithdraw() {
+            const users = JSON.parse(localStorage.getItem('askani_users'));
+            const balance = users[currentUser].balance;
+            const method = document.getElementById('pay-method').value;
+            const num = document.getElementById('pay-number').value;
+            const name = document.getElementById('pay-name').value;
+            const amt = document.getElementById('pay-amount').value;
+
+            if(balance < 100) return alert("Apka balance 100 se kam hai!");
+            if(!num || !name || !amt) return alert("Sari details bharein!");
+            if(amt > balance) return alert("Itna balance nahi hai!");
+
+            // Prepare WhatsApp Message
+            const msg = `💰 *NEW WITHDRAWAL REQUEST*%0A%0A` +
+
+                        `👤 *User:* ${currentUser}%0A` +
+                        `🏦 *Method:* ${method}%0A` +
+                        `🔢 *Account:* ${num}%0A` +
+                        `📛 *Name:* ${name}%0A` +
+                        `💵 *Amount:* PKR ${amt}%0A%0A` +
+                        `Please process my payment.`;
+
+            window.open(`https://wa.me{WHATSAPP_NUMBER}?text=${msg}`, '_blank');
+        }
+
+        function logout() {
+            location.reload();
+        }
+    </script>
+</body>
+</html>
+
+
