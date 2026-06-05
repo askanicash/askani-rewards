@@ -1,13 +1,11 @@
-# Askani Cash - Complete Earning Script
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Askani Cash - Earn Online</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://tailwindcss.com"></script>
+    <link href="https://googleapis.com" rel="stylesheet">
     <style>
         body {
             font-family: 'Poppins', sans-serif;
@@ -19,7 +17,6 @@
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-
             border-radius: 1.5rem;
         }
         .btn-gradient {
@@ -32,6 +29,31 @@
         }
         .hidden-section { display: none; }
         .timer-active { pointer-events: none; opacity: 0.6; }
+        .ad-locked { pointer-events: none; opacity: 0.5; background: rgba(220, 38, 38, 0.1) !important; border-color: rgba(220, 38, 38, 0.3) !important; }
+        
+        /* Spin Wheel Animation Styling */
+        .wheel-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+            border-radius: 50%;
+            border: 5px solid #3b82f6;
+            background: conic-gradient(#ef4444 0% 16.6%, #f59e0b 16.6% 33.2%, #10b981 33.2% 49.8%, #3b82f6 49.8% 66.4%, #8b5cf6 66.4% 83%, #ec4899 83% 100%);
+            transition: transform 4s cubic-bezier(0.1, 0.8, 0.3, 1);
+        }
+        .wheel-pointer {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 25px solid #ffffff;
+            z-index: 10;
+        }
     </style>
 </head>
 <body class="p-4 md:p-8">
@@ -39,27 +61,25 @@
     <!-- Auth Section (Login/Signup) -->
     <div id="auth-section" class="max-w-md mx-auto mt-10">
         <div class="glass p-8 text-center">
-
             <h1 class="text-3xl font-bold mb-6 text-blue-400">Askani Cash</h1>
             
             <div id="login-form">
-                <h2 class="text-xl mb-4">Login</h2>
+                <h2 class="text-xl mb-4 font-semibold text-slate-200">Login</h2>
                 <input type="text" id="login-user" placeholder="Username" class="w-full p-3 mb-3 rounded-lg bg-slate-800 border border-slate-700 focus:outline-none focus:border-blue-500">
                 <input type="password" id="login-pass" placeholder="Password" class="w-full p-3 mb-6 rounded-lg bg-slate-800 border border-slate-700 focus:outline-none focus:border-blue-500">
                 <button onclick="handleLogin()" class="w-full btn-gradient p-3 rounded-lg font-bold">Sign In</button>
-                <p class="mt-4 text-sm text-slate-400">Account nahi hai? <a href="#" onclick="toggleAuth(false)" class="text-blue-400 underline">Create Account</a></p>
+                <p class="mt-4 text-sm text-slate-400">Don't have an account? <a href="#" onclick="toggleAuth(false)" class="text-blue-400 underline">Create Account</a></p>
             </div>
 
             <div id="signup-form" class="hidden-section">
-                <h2 class="text-xl mb-4">Create Account</h2>
+                <h2 class="text-xl mb-4 font-semibold text-slate-200">Create Account</h2>
                 <input type="text" id="reg-user" placeholder="Username" class="w-full p-3 mb-3 rounded-lg bg-slate-800 border border-slate-700">
                 <input type="password" id="reg-pass" placeholder="Password" class="w-full p-3 mb-3 rounded-lg bg-slate-800 border border-slate-700">
                 <input type="text" id="reg-ref" placeholder="Referral Code (Optional)" class="w-full p-3 mb-6 rounded-lg bg-slate-800 border border-slate-700">
                 <button onclick="handleSignup()" class="w-full btn-gradient p-3 rounded-lg font-bold">Sign Up</button>
-                <p class="mt-4 text-sm text-slate-400">Pehle se account hai? <a href="#" onclick="toggleAuth(true)" class="text-blue-400 underline">Login</a></p>
+                <p class="mt-4 text-sm text-slate-400">Already have an account? <a href="#" onclick="toggleAuth(true)" class="text-blue-400 underline">Login</a></p>
             </div>
         </div>
-
     </div>
 
     <!-- Main Dashboard Section -->
@@ -67,43 +87,72 @@
         <!-- Header Info -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             <div class="glass p-6 text-center">
-                <p class="text-slate-400 text-sm">Welcome,</p>
+                <p class="text-slate-400 text-sm">Welcome back,</p>
                 <h3 id="display-name" class="text-xl font-bold">User</h3>
             </div>
             <div class="glass p-6 text-center border-b-4 border-blue-500">
                 <p class="text-slate-400 text-sm">Total Balance</p>
-                <h3 class="text-3xl font-bold">PKR <span id="balance">0</span></h3>
+                <h3 class="text-3xl font-bold">PKR <span id="balance">0.00</span></h3>
             </div>
             <div class="glass p-6 text-center">
-                <p class="text-slate-400 text-sm">Referral Code</p>
+                <p class="text-slate-400 text-sm">Your Referral Code</p>
                 <h3 id="my-ref-code" class="text-lg font-mono text-blue-300">ABC123</h3>
             </div>
         </div>
 
-
         <!-- Navigation Tabs -->
-        <div class="flex justify-center gap-4 mb-8">
-            <button onclick="showTab('tasks')" class="px-6 py-2 rounded-full glass border-blue-500 text-blue-400">Tasks</button>
-            <button onclick="showTab('withdraw')" class="px-6 py-2 rounded-full glass">Withdraw</button>
-            <button onclick="logout()" class="px-6 py-2 rounded-full bg-red-900/30 text-red-400">Logout</button>
+        <div class="flex justify-center flex-wrap gap-4 mb-8">
+            <button onclick="showTab('tasks')" id="tab-btn-tasks" class="px-6 py-2 rounded-full glass border-blue-500 text-blue-400 font-medium">Daily Ads</button>
+            <button onclick="showTab('spin')" id="tab-btn-spin" class="px-6 py-2 rounded-full glass font-medium">Lucky Spin</button>
+            <button onclick="showTab('withdraw')" id="tab-btn-withdraw" class="px-6 py-2 rounded-full glass font-medium">Withdraw Cash</button>
+            <button onclick="logout()" class="px-6 py-2 rounded-full bg-red-900/30 text-red-400 font-medium">Logout</button>
         </div>
 
         <!-- Tasks Tab -->
         <div id="tab-tasks" class="tab-content">
-            <h2 class="text-2xl font-bold mb-6 text-center">Daily Tasks (10 Ads)</h2>
+            <h2 class="text-2xl font-bold mb-2 text-center">Daily Tasks (10 Ads)</h2>
+            <p class="text-xs text-center text-slate-400 mb-6">Each ad has a 12-hour timeout cooldown after completion.</p>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4" id="ads-container">
-                <!-- Ad buttons will be generated by JS -->
+                <!-- Ad buttons generated by JS -->
+            </div>
+        </div>
+
+        <!-- Spin Wheel Tab -->
+        <div id="tab-spin" class="tab-content hidden-section">
+            <div class="max-w-md mx-auto glass p-8 text-center">
+                <h2 class="text-2xl font-bold mb-2">Lucky Wheel Spin</h2>
+                <p class="text-xs text-slate-400 mb-6">Spin once every 24 hours to win up to Rs. 10.00 randomly!</p>
+                
+                <div class="relative mb-6">
+                    <div class="wheel-pointer"></div>
+                    <div id="wheel" class="wheel-container flex items-center justify-center font-bold text-slate-900 text-shadow">
+                        <span class="bg-white/80 rounded-full px-2 py-1 text-xs tracking-wider z-0">LUCKY</span>
+                    </div>
+                </div>
+
+                <div id="spin-status" class="mb-4 font-semibold text-lg text-yellow-400"></div>
+
+                <button onclick="spinWheel()" id="spin-btn" class="w-full btn-gradient p-3 rounded-lg font-bold">
+                    Spin Now
+                </button>
+                <div id="spin-timer-msg" class="text-sm text-red-400 font-medium mt-3 hidden-section"></div>
             </div>
         </div>
 
         <!-- Withdraw Tab -->
         <div id="tab-withdraw" class="tab-content hidden-section">
             <div class="max-w-md mx-auto glass p-8">
-                <h2 class="text-2xl font-bold mb-6 text-center">Withdrawal</h2>
-
-                <p class="text-sm text-slate-400 mb-6 text-center">Minimum Withdrawal: 100 PKR</p>
+                <h2 class="text-2xl font-bold mb-2 text-center">Withdrawal</h2>
+                <p class="text-sm text-slate-400 mb-6 text-center">Minimum Required Payout: 100.00 PKR</p>
                 
-                <div class="space-y-4">
+                <!-- Balance Check Warning -->
+                <div id="withdraw-error-msg" class="bg-red-950/50 border border-red-500 text-red-300 p-4 rounded-lg mb-6 text-center font-medium">
+                    ❌ Your balance is under Rs. 100! Complete your threshold first.
+                </div>
+
+                <!-- Input Form Details -->
+                <div id="withdraw-form-fields" class="space-y-4">
+                    <label class="block text-sm text-slate-300">Payment Gateway Target</label>
                     <select id="pay-method" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700">
                         <option value="EasyPaisa">EasyPaisa</option>
                         <option value="JazzCash">JazzCash</option>
@@ -111,173 +160,27 @@
                         <option value="FaucetPay">FaucetPay</option>
                         <option value="Bank Account">Bank Transfer</option>
                     </select>
-                    <input type="text" id="pay-number" placeholder="Account Number" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700">
-                    <input type="text" id="pay-name" placeholder="Account Holder Name" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700">
-                    <input type="number" id="pay-amount" placeholder="Amount (PKR)" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700">
+                    <input type="text" id="pay-number" placeholder="Account Number / Wallet ID" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700">
+                    <input type="text" id="pay-name" placeholder="Account Title Name" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700">
+                    <input type="number" step="0.01" id="pay-amount" placeholder="Amount to Request (PKR)" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700">
                     
-                    <button onclick="processWithdraw()" class="w-full btn-gradient p-3 rounded-lg font-bold mt-4">Submit to WhatsApp</button>
+                    <button onclick="processWithdraw()" id="submit-withdraw-btn" class="w-full btn-gradient p-3 rounded-lg font-bold mt-4">
+                        Send Order via WhatsApp
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
-
     <script>
         // CONFIGURATION
-        const WHATSAPP_NUMBER = "923123456789"; // Apna number yahan likhein
-        const POINTS_PER_AD = 1; // 1 point = 1 PKR
+        const WHATSAPP_NUMBER = "93232605904"; 
         const REFFERAL_BONUS = 15;
+        const AD_LOCK_TIME = 12 * 60 * 60 * 1000; // 12 Hours
+        const SPIN_LOCK_TIME = 24 * 60 * 60 * 1000; // 24 Hours
 
-        // STATE
         let currentUser = null;
+        let globalTimerIntervals = {};
 
         // 1. Auth Logic
         function toggleAuth(showLogin) {
-            document.getElementById('login-form').classList.toggle('hidden-section', !showLogin);
-            document.getElementById('signup-form').classList.toggle('hidden-section', showLogin);
-        }
-
-        function handleSignup() {
-            const user = document.getElementById('reg-user').value;
-            const pass = document.getElementById('reg-pass').value;
-            const ref = document.getElementById('reg-ref').value;
-
-
-            if(!user || !pass) return alert("Details bharain!");
-            
-            let users = JSON.parse(localStorage.getItem('askani_users') || '{}');
-            if(users[user]) return alert("User pehle se hai!");
-
-            users[user] = { 
-                password: pass, 
-                balance: ref ? REFFERAL_BONUS : 0, 
-                refCode: user + Math.floor(Math.random()*1000) 
-            };
-            
-            localStorage.setItem('askani_users', JSON.stringify(users));
-            alert("Account ban gaya! Ab login karein.");
-            toggleAuth(true);
-        }
-
-        function handleLogin() {
-            const user = document.getElementById('login-user').value;
-            const pass = document.getElementById('login-pass').value;
-
-            
-            let users = JSON.parse(localStorage.getItem('askani_users') || '{}');
-            
-            if(users[user] && users[user].password === pass) {
-                currentUser = user;
-                loadDashboard();
-            } else {
-                alert("Ghalat details!");
-            }
-        }
-
-        // 2. Dashboard Logic
-        function loadDashboard() {
-            document.getElementById('auth-section').classList.add('hidden-section');
-            document.getElementById('dashboard-section').classList.remove('hidden-section');
-            
-            const users = JSON.parse(localStorage.getItem('askani_users'));
-            const data = users[currentUser];
-            
-
-            document.getElementById('display-name').innerText = currentUser;
-            document.getElementById('balance').innerText = data.balance;
-            document.getElementById('my-ref-code').innerText = data.refCode;
-            
-            generateAds();
-        }
-
-        function showTab(tab) {
-            document.getElementById('tab-tasks').classList.toggle('hidden-section', tab !== 'tasks');
-            document.getElementById('tab-withdraw').classList.toggle('hidden-section', tab !== 'withdraw');
-        }
-
-        // 3. Ad Tasks Logic
-        function generateAds() {
-            const container = document.getElementById('ads-container');
-            container.innerHTML = '';
-            
-            for(let i = 1; i <= 10; i++) {
-                const seconds = 4 + i; // 1st ad 5s, 2nd 6s, etc.
-
-                const btn = document.createElement('button');
-                btn.className = "glass p-4 text-center hover:bg-white/10 transition flex flex-col items-center gap-2";
-                btn.id = `ad-btn-${i}`;
-                btn.innerHTML = `
-                    <span class="text-xs text-blue-300">AD #${i}</span>
-                    <span class="text-sm font-bold">${seconds}s Timer</span>
-                    <span class="text-[10px] text-green-400">+1 PKR</span>
-                `;
-                btn.onclick = () => startAd(i, seconds);
-                container.appendChild(btn);
-            }
-        }
-
-        function startAd(id, time) {
-            const btn = document.getElementById(`ad-btn-${id}`);
-            btn.classList.add('timer-active');
-            let remaining = time;
-            
-            // Link open (Replace with your actual ad links)
-
-            window.open("https://www.google.com", "_blank"); 
-
-            const interval = setInterval(() => {
-                remaining--;
-                btn.innerHTML = `<span class="text-blue-300">Wait</span> <span class="text-2xl">${remaining}</span>`;
-                
-                if(remaining <= 0) {
-                    clearInterval(interval);
-                    addBalance(POINTS_PER_AD);
-                    btn.innerHTML = `<span class="text-green-400">DONE ✅</span>`;
-                    btn.classList.remove('timer-active');
-                    btn.onclick = null;
-                }
-            }, 1000);
-        }
-
-        function addBalance(amt) {
-            let users = JSON.parse(localStorage.getItem('askani_users'));
-            users[currentUser].balance += amt;
-
-            localStorage.setItem('askani_users', JSON.stringify(users));
-            document.getElementById('balance').innerText = users[currentUser].balance;
-        }
-
-        // 4. Withdrawal Logic
-        function processWithdraw() {
-            const users = JSON.parse(localStorage.getItem('askani_users'));
-            const balance = users[currentUser].balance;
-            const method = document.getElementById('pay-method').value;
-            const num = document.getElementById('pay-number').value;
-            const name = document.getElementById('pay-name').value;
-            const amt = document.getElementById('pay-amount').value;
-
-            if(balance < 100) return alert("Apka balance 100 se kam hai!");
-            if(!num || !name || !amt) return alert("Sari details bharein!");
-            if(amt > balance) return alert("Itna balance nahi hai!");
-
-            // Prepare WhatsApp Message
-            const msg = `💰 *NEW WITHDRAWAL REQUEST*%0A%0A` +
-
-                        `👤 *User:* ${currentUser}%0A` +
-                        `🏦 *Method:* ${method}%0A` +
-                        `🔢 *Account:* ${num}%0A` +
-                        `📛 *Name:* ${name}%0A` +
-                        `💵 *Amount:* PKR ${amt}%0A%0A` +
-                        `Please process my payment.`;
-
-            window.open(`https://wa.me{WHATSAPP_NUMBER}?text=${msg}`, '_blank');
-        }
-
-        function logout() {
-            location.reload();
-        }
-    </script>
-</body>
-</html>
-
-
