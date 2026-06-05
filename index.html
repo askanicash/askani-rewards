@@ -1,54 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Askani Cash - PTC Platform</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Arial, sans-serif; }
+        body { background: #0f172a; color: #f8fafc; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        .container { background: #1e293b; padding: 30px; border-radius: 12px; width: 100%; max-width: 450px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); text-align: center; }
+        h2 { margin-bottom: 20px; color: #38bdf8; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 6px; border: 1px solid #475569; background: #334155; color: white; font-size: 16px; }
+        button { width: 100%; padding: 12px; background: #0284c7; border: none; color: white; font-size: 16px; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 10px; transition: 0.2s; }
+        button:hover { background: #0369a1; }
+        .link { margin-top: 15px; font-size: 14px; color: #94a3b8; cursor: pointer; display: inline-block; }
+        .link:hover { color: #38bdf8; }
+        .hidden { display: none; }
+        
+        /* Dashboard Styles */
+        .stats-box { background: #334155; padding: 15px; border-radius: 8px; margin: 15px 0; font-size: 18px; font-weight: bold; color: #4ade80; }
+        .ad-card { background: #1e293b; border: 2px solid #475569; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: left; position: relative; }
+        .ad-title { font-weight: bold; font-size: 16px; color: #f8fafc; }
+        .ad-reward { color: #38bdf8; font-size: 14px; margin-top: 5px; }
+        .timer { font-weight: bold; color: #f43f5e; margin-top: 5px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- 1. LOGIN SCREEN -->
+    <div id="login-screen">
+        <h2>Askani Cash Login</h2>
+        <input type="email" id="login-email" placeholder="Enter Email" required>
+        <input type="password" id="login-pass" placeholder="Enter Password" required>
+        <button onclick="handleLogin()">Sign In</button>
+        <span class="link" onclick="switchScreen('register-screen')">Naya Account Banayein (Register)</span>
+    </div>
+
+    <!-- 2. REGISTER SCREEN -->
+    <div id="register-screen" class="hidden">
+        <h2>Create Account</h2>
+        <input type="email" id="reg-email" placeholder="Enter Email" required>
+        <input type="password" id="reg-pass" placeholder="Enter Password" required>
+        <button onclick="handleRegister()">Register Now</button>
+        <span class="link" onclick="switchScreen('login-screen')">Pehle se account hai? Login karein</span>
+    </div>
+
+    <!-- 3. PTC DASHBOARD SCREEN -->
+    <div id="dashboard-screen" class="hidden">
+        <h2>Welcome to Dashboard</h2>
+        <p id="user-display" style="color: #94a3b8; font-size: 14px;"></p>
+        
+        <div class="stats-box">
+            Your Balance: <span id="balance">0.00</span> PKR
+        </div>
+
+        <h3 style="margin-top: 20px; text-align: left; color: #38bdf8;">Available Ads To Click</h3>
+        
+        <!-- Ad 1 -->
+        <div class="ad-card" id="ad1">
+            <div class="ad-title">Earn Money Online - Ad #1</div>
+            <div class="ad-reward">Reward: 5.00 PKR | Duration: 10 Sec</div>
+            <button id="btn-ad1" onclick="watchAd('ad1', 10, 5)">Watch Ad</button>
+            <div id="timer-ad1" class="timer hidden">Watching: <span id="count-ad1">10</span>s</div>
+        </div>
+
+        <!-- Ad 2 -->
+        <div class="ad-card" id="ad2">
+            <div class="ad-title">Best Crypto Trading - Ad #2</div>
+            <div class="ad-reward">Reward: 10.00 PKR | Duration: 15 Sec</div>
+            <button id="btn-ad2" onclick="watchAd('ad2', 15, 10)">Watch Ad</button>
+            <div id="timer-ad2" class="timer hidden">Watching: <span id="count-ad2">15</span>s</div>
+        </div>
+
+        <button onclick="logout()" style="background: #475569; margin-top: 20px;">Logout</button>
+    </div>
+</div>
+
 <script>
-  // Aapka ekdum sahi wala link
-  const SCRIPT_URL = "https://google.com";
+    // System Screen Switching
+    function switchScreen(screenId) {
+        document.getElementById('login-screen').classList.add('hidden');
+        document.getElementById('register-screen').classList.add('hidden');
+        document.getElementById('dashboard-screen').classList.add('hidden');
+        document.getElementById(screenId).classList.remove('hidden');
+    }
 
-  const loginForm = document.querySelector('form'); 
-  if (loginForm) {
-    loginForm.addEventListener('submit', function(e) {
-      e.preventDefault();
+    // LocalStorage based Data Management
+    let currentBalance = parseFloat(localStorage.getItem('ptc_balance')) || 0.00;
+    let registeredUser = JSON.parse(localStorage.getItem('ptc_user')) || null;
 
-      const emailInput = document.querySelector('input[type="email"]').value;
-      const passwordInput = document.querySelector('input[type="password"]').value;
-      const submitButton = document.querySelector('button[type="submit"]');
+    // Register Logic
+    function handleRegister() {
+        const email = document.getElementById('reg-email').value;
+        const pass = document.getElementById('reg-pass').value;
 
-      submitButton.innerText = "Checking...";
-      submitButton.disabled = true;
+        if(!email || !pass) { alert("Please fill all fields!"); return; }
 
-      // Data ko sahi format (URL-Encoded) me badalna taaki Google accept kare
-      const formData = new URLSearchParams();
-      formData.append("action", "login");
-      formData.append("email", emailInput);
-      formData.append("password", passwordInput);
+        localStorage.setItem('ptc_user', JSON.stringify({ email: email, pass: pass }));
+        localStorage.setItem('ptc_balance', '0.00');
+        alert("Account Successfully Created! Ab login karein.");
+        switchScreen('login-screen');
+    }
 
-      fetch(SCRIPT_URL, {
-        method: "POST",
-        <!-- Formspree ke zariye data direct aapke email par aayega -->
-<form action="https://formspree.io" method="POST">
-  
-  <!-- Dhyan rakhein ki email input me name="email" zaroor likha ho -->
-  <input type="email" name="email" placeholder="Apna Email Likhein" required>
-  
-  <!-- Dhyan rakhein ki password input me name="password" zaroor likha ho -->
-  <input type="password" name="password" placeholder="Apna Password Likhein" required>
-  
-  <!-- Button ka type submit hona chahiye -->
-  <button type="submit">Sign In</button>
+    // Login Logic
+    function handleLogin() {
+        const email = document.getElementById('login-email').value;
+        const pass = document.getElementById('login-pass').value;
+        const user = JSON.parse(localStorage.getItem('ptc_user'));
 
-</form>
-      
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: formData.toString()
-      })
-      .then(() => {
-        alert("Success! Data Sheet me bhej diya gaya hai.");
-        // Login ke baad dashboard page par bhejna
-        window.location.href = "dashboard.html"; 
-      })
-      .catch(error => {
-        alert("Error: " + error.message);
-        submitButton.innerText = "Sign In";
-        submitButton.disabled = false;
-      });
-    });
-  }
+        if (user && user.email === email && user.pass === pass) {
+            document.getElementById('user-display').innerText = "Logged in as: " + email;
+            document.getElementById('balance').innerText = currentBalance.toFixed(2);
+            switchScreen('dashboard-screen');
+        } else {
+            alert("Galat Email ya Password! Pehle Register karein agar account nahi hai.");
+        }
+    }
+
+    // PTC Ad Watching Logic
+    function watchAd(adId, duration, reward) {
+        const btn = document.getElementById('btn-' + adId);
+        const timerDiv = document.getElementById('timer-' + adId);
+        const countSpan = document.getElementById('count-' + adId);
+
+        btn.classList.add('hidden');
+        timerDiv.classList.remove('hidden');
+
+        let timeLeft = duration;
+        const interval = setInterval(() => {
+            timeLeft--;
+            countSpan.innerText = timeLeft;
+
+            if (timeLeft <= 0) {
+                clearInterval(interval);
+                timerDiv.classList.add('hidden');
+                document.getElementById(adId).innerHTML = "<p style='color: #4ade80; font-weight: bold;'>✓ Ad Completed! Amount Added.</p>";
+                
+                // Add balance
+                currentBalance += reward;
+                localStorage.setItem('ptc_balance', currentBalance);
+                document.getElementById('balance').innerText = currentBalance.toFixed(2);
+            }
+        }, 1000);
+    }
+
+    // Logout
+    function logout() {
+        switchScreen('login-screen');
+    }
+
+    // Auto login check agar session active ho
+    window.onload = function() {
+        // Shuru me login screen hi dikhegi
+    }
 </script>
+</body>
+</html>
