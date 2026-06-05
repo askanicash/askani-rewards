@@ -6,7 +6,6 @@
     <title>Askani Cash - Earn Online</title>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        /* STABLE CUSTOM CSS - ZERO EXTERNAL dependencies */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -80,9 +79,10 @@
             font-size: 0.95rem;
             color: #94a3b8;
         }
-        .link-text a {
+        .link-text span {
             color: #3b82f6;
             text-decoration: underline;
+            cursor: pointer;
         }
         .hidden-section {
             display: none !important;
@@ -205,29 +205,31 @@
 </head>
 <body>
 
-    <!-- Auth Section -->
+    <!-- Auth View Framework -->
     <div id="auth-section" class="container-box">
         <h1>Askani Cash</h1>
         
-        <div id="login-form">
+        <!-- Login Form Wrapper (No structural <form> tag to avoid reload block) -->
+        <div id="login-form-view">
             <h2>Login Account</h2>
             <input type="text" id="login-user" placeholder="Enter Username">
             <input type="password" id="login-pass" placeholder="Enter Password">
-            <button onclick="handleLogin()" class="btn-gradient">Sign In</button>
-            <p class="link-text">Don't have an account? <a href="#" onclick="toggleAuth(false)">Create Account</a></p>
+            <button type="button" onclick="handleLoginDirect()" class="btn-gradient">Sign In</button>
+            <p class="link-text">Don't have an account? <span onclick="toggleAuthView(false)">Create Account</span></p>
         </div>
 
-        <div id="signup-form" class="hidden-section">
+        <!-- Registration View Wrapper -->
+        <div id="signup-form-view" class="hidden-section">
             <h2>Create Account</h2>
             <input type="text" id="reg-user" placeholder="Choose Username">
             <input type="password" id="reg-pass" placeholder="Choose Password">
             <input type="text" id="reg-ref" placeholder="Referral Username (Optional)">
-            <button onclick="handleSignup()" class="btn-gradient">Sign Up</button>
-            <p class="link-text">Already have an account? <a href="#" onclick="toggleAuth(true)">Login Here</a></p>
+            <button type="button" onclick="handleSignupDirect()" class="btn-gradient">Sign Up</button>
+            <p class="link-text">Already have an account? <span onclick="toggleAuthView(true)">Login Here</span></p>
         </div>
     </div>
 
-    <!-- Dashboard Section -->
+    <!-- Live Operational Dashboard Context -->
     <div id="dashboard-section" class="dashboard-container hidden-section">
         <div class="stats-grid">
             <div class="stat-card">
@@ -251,14 +253,14 @@
             <button onclick="logout()" class="tab-btn logout-btn">Logout</button>
         </div>
 
-        <!-- Ads Tab -->
+        <!-- System Task Sheets -->
         <div id="tab-tasks" class="tab-content container-box" style="max-width:100%; width:100%;">
             <h2>Daily Video Tasks</h2>
             <p style="font-size:0.85rem; color:#94a3b8; margin-bottom:20px;">Earn points per click. Completed ads freeze for 12 hours.</p>
             <div class="ads-grid" id="ads-container"></div>
         </div>
 
-        <!-- Spin Tab -->
+        <!-- Fortune Lucky Spin System -->
         <div id="tab-spin" class="tab-content container-box hidden-section">
             <h2>Lucky Wheel Spin</h2>
             <p style="font-size:0.85rem; color:#94a3b8; margin-bottom:15px;">Spin once every 24 hours to win up to Rs. 10.00 randomly!</p>
@@ -270,7 +272,3 @@
 
             <div id="spin-status" style="margin-bottom:15px; font-weight:bold; color:#f59e0b; font-size:1.1rem;"></div>
             <button onclick="spinWheel()" id="spin-btn" class="btn-gradient">Spin Now</button>
-            <div id="spin-timer-msg" style="margin-top:10px; color:#f87171; font-size:0.9rem;" class="hidden-section"></div>
-        </div>
-
-        <!-- Withdraw Tab -->
