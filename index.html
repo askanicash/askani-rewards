@@ -3,199 +3,207 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Askani Cash - Earn Online</title>
+    <title>Askani Cash - Complete Earning Script</title>
+    <!-- Tailwind CSS Link for Modern Dark UI -->
     <script src="https://tailwindcss.com"></script>
-    <link href="https://googleapis.com" rel="stylesheet">
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            color: white;
-            min-height: 100vh;
+            background-color: #0b111e;
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        .glass {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 1.5rem;
+        .custom-card {
+            background-color: #161f30;
+            border: 1px solid #232f45;
         }
-        .btn-gradient {
-            background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
+        .ad-btn {
+            background-color: #1c273c;
+            border: 1px solid #2d3d5a;
             transition: all 0.3s ease;
         }
-        .btn-gradient:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+        .ad-btn:hover {
+            background-color: #24334f;
+            border-color: #3b82f6;
         }
-        .hidden-section { display: none; }
-        .timer-active { pointer-events: none; opacity: 0.6; }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body class="min-h-screen flex flex-col justify-between">
 
-    <!-- Auth Section (Login/Signup) -->
-    <div id="auth-section" class="max-w-md mx-auto mt-10">
-        <div class="glass p-8 text-center">
-            <h1 class="text-3xl font-bold mb-6 text-blue-400">Askani Cash</h1>
+    <!-- 1. AUTHENTICATION SECTION (Register / Login) -->
+    <div id="auth-section" class="flex-grow flex items-center justify-center p-4">
+        <div class="w-full max-w-md p-6 rounded-xl custom-card shadow-lg">
+            <h2 id="auth-title" class="text-2xl font-bold text-center mb-6 text-blue-400">Create Account</h2>
             
-            <div id="login-form">
-                <h2 class="text-xl mb-4">Login</h2>
-                <input type="text" id="login-user" placeholder="Username" class="w-full p-3 mb-3 rounded-lg bg-slate-800 border border-slate-700 focus:outline-none focus:border-blue-500">
-                <input type="password" id="login-pass" placeholder="Password" class="w-full p-3 mb-6 rounded-lg bg-slate-800 border border-slate-700 focus:outline-none focus:border-blue-500">
-                <button onclick="handleLogin()" class="w-full btn-gradient p-3 rounded-lg font-bold">Sign In</button>
-                <p class="mt-4 text-sm text-slate-400">Account nahi hai? <a href="#" onclick="toggleAuth(false)" class="text-blue-400 underline">Create Account</a></p>
-            </div>
+            <form id="auth-form" onsubmit="handleAuth(event)">
+                <!-- Full Name (Only for Registration) -->
+                <div id="name-group" class="mb-4">
+                    <label class="block text-sm text-gray-400 mb-1">Full Name</label>
+                    <input type="text" id="username" class="w-full bg-[#0b111e] border border-[#232f45] rounded p-2.5 text-white focus:outline-none focus:border-blue-500" placeholder="e.g. Saeedaskani" required>
+                </div>
 
-            <div id="signup-form" class="hidden-section">
-                <h2 class="text-xl mb-4">Create Account</h2>
-                <input type="text" id="reg-user" placeholder="Username" class="w-full p-3 mb-3 rounded-lg bg-slate-800 border border-slate-700">
-                <input type="password" id="reg-pass" placeholder="Password" class="w-full p-3 mb-3 rounded-lg bg-slate-800 border border-slate-700">
-                <input type="text" id="reg-ref" placeholder="Referral Code (Optional)" class="w-full p-3 mb-6 rounded-lg bg-slate-800 border border-slate-700">
-                <button onclick="handleSignup()" class="w-full btn-gradient p-3 rounded-lg font-bold">Sign Up</button>
-                <p class="mt-4 text-sm text-slate-400">Pehle se account hai? <a href="#" onclick="toggleAuth(true)" class="text-blue-400 underline">Login</a></p>
-            </div>
+                <!-- Email / Username -->
+                <div class="mb-4">
+                    <label class="block text-sm text-gray-400 mb-1">Email Address</label>
+                    <input type="email" id="email" class="w-full bg-[#0b111e] border border-[#232f45] rounded p-2.5 text-white focus:outline-none focus:border-blue-500" placeholder="name@example.com" required>
+                </div>
+
+                <!-- Password -->
+                <div class="mb-6">
+                    <label class="block text-sm text-gray-400 mb-1">Password</label>
+                    <input type="password" id="password" class="w-full bg-[#0b111e] border border-[#232f45] rounded p-2.5 text-white focus:outline-none focus:border-blue-500" placeholder="••••••••" required>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" id="submit-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium p-2.5 rounded transition">
+                    Register Now
+                </button>
+            </form>
+
+            <!-- Toggle Link -->
+            <p class="text-sm text-gray-400 text-center mt-4">
+                <span id="toggle-text">Already have an account?</span>
+                <button onclick="toggleAuthMode()" id="toggle-btn" class="text-blue-400 hover:underline font-medium ml-1">Login</button>
+            </p>
         </div>
     </div>
 
-    <!-- Main Dashboard Section -->
-    <div id="dashboard-section" class="max-w-4xl mx-auto hidden-section">
-        <!-- Header Info -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            <div class="glass p-6 text-center">
-                <p class="text-slate-400 text-sm">Welcome,</p>
-                <h3 id="display-name" class="text-xl font-bold">User</h3>
+    <!-- 2. MAIN DASHBOARD SECTION (Hidden by default, shows after login) -->
+    <div id="dashboard-section" class="hidden w-full max-w-4xl mx-auto p-4 flex-grow">
+        <!-- Header Script Title -->
+        <div class="text-xs text-gray-500 font-mono mb-4"># Askani Cash - Complete Earning Script</div>
+
+        <!-- Top Statistics Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <!-- Welcome Card -->
+            <div class="p-4 rounded-lg custom-card text-center">
+                <p class="text-xs text-gray-400 uppercase tracking-wider mb-1">Welcome</p>
+                <p id="user-display" class="text-lg font-bold text-gray-200">Saeedaskani</p>
             </div>
-            <div class="glass p-6 text-center border-b-4 border-blue-500">
-                <p class="text-slate-400 text-sm">Total Balance</p>
-                <h3 class="text-3xl font-bold">PKR <span id="balance">0.00</span></h3>
+            <!-- Total Balance Card -->
+            <div class="p-4 rounded-lg custom-card text-center">
+                <p class="text-xs text-gray-400 uppercase tracking-wider mb-1">Total Balance</p>
+                <p class="text-xl font-extrabold text-white">PKR <span id="balance-display">0</span></p>
             </div>
-            <div class="glass p-6 text-center">
-                <p class="text-slate-400 text-sm">Referral Code</p>
-                <h3 id="my-ref-code" class="text-lg font-mono text-blue-300">ABC123</h3>
+            <!-- Referral Code Card -->
+            <div class="p-4 rounded-lg custom-card text-center">
+                <p class="text-xs text-gray-400 uppercase tracking-wider mb-1">Referral Code</p>
+                <p id="referral-display" class="text-md font-bold text-blue-400">Saeedaskani 183</p>
             </div>
         </div>
 
-        <!-- Navigation Tabs -->
-        <div class="flex justify-center gap-4 mb-8">
-            <button onclick="showTab('tasks')" class="px-6 py-2 rounded-full glass border-blue-500 text-blue-400">Tasks</button>
-            <button onclick="showTab('withdraw')" class="px-6 py-2 rounded-full glass">Withdraw</button>
-            <button onclick="logout()" class="px-6 py-2 rounded-full bg-red-900/30 text-red-400">Logout</button>
+        <!-- Action Navigation Buttons -->
+        <div class="flex justify-center space-x-3 mb-8">
+            <button class="px-5 py-1.5 bg-blue-600 text-sm rounded-full font-medium shadow">Tasks</button>
+            <button onclick="triggerWithdraw()" class="px-5 py-1.5 bg-gray-800 hover:bg-gray-700 text-sm rounded-full font-medium transition">Withdraw</button>
+            <button onclick="logout()" class="px-5 py-1.5 bg-red-900/40 hover:bg-red-900/60 text-red-400 text-sm rounded-full font-medium transition">Logout</button>
         </div>
 
-        <!-- Tasks Tab -->
-        <div id="tab-tasks" class="tab-content">
-            <h2 class="text-2xl font-bold mb-6 text-center">Daily Tasks (10 Ads)</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4" id="ads-container">
-                <!-- Ad buttons generated automatically by JS -->
-            </div>
+        <!-- Daily Tasks Grid Area -->
+        <div class="text-center mb-6">
+            <h3 class="text-lg font-semibold tracking-wide">Daily Tasks (10 Ads)</h3>
         </div>
 
-        <!-- Withdraw Tab -->
-        <div id="tab-withdraw" class="tab-content hidden-section">
-            <div class="max-w-md mx-auto glass p-8">
-                <h2 class="text-2xl font-bold mb-6 text-center">Withdrawal</h2>
-                <p class="text-sm text-slate-400 mb-6 text-center">Minimum Withdrawal: 100 PKR</p>
-                
-                <!-- Balance Check Warning -->
-                <div id="withdraw-error-msg" class="bg-red-950/50 border border-red-500 text-red-300 p-4 rounded-lg mb-6 text-center font-medium">
-                    ❌ Aapka Rs. 100 complete nahi hai! Pehle balance mukammal karein.
-                </div>
-
-                <!-- Input Form Details -->
-                <div id="withdraw-form-fields" class="space-y-4">
-                    <select id="pay-method" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700">
-                        <option value="EasyPaisa">EasyPaisa</option>
-                        <option value="JazzCash">JazzCash</option>
-                        <option value="SadaPay">SadaPay</option>
-                        <option value="FaucetPay">FaucetPay</option>
-                        <option value="Bank Account">Bank Transfer</option>
-                    </select>
-                    <input type="text" id="pay-number" placeholder="Account Number" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700">
-                    <input type="text" id="pay-name" placeholder="Account Holder Name" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700">
-                    <input type="number" step="0.01" id="pay-amount" placeholder="Amount (PKR)" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700">
-                    
-                    <button onclick="processWithdraw()" id="submit-withdraw-btn" class="w-full btn-gradient p-3 rounded-lg font-bold mt-4">
-                        Submit to WhatsApp
-                    </button>
-                </div>
-            </div>
+        <!-- Ads Grid (1 to 10) -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 mb-12" id="ads-container">
+            <!-- Ads will be dynamically generated by JS below to maintain perfect timer rules -->
         </div>
     </div>
 
+    <!-- Script / Logic Handler -->
     <script>
-        // CONFIGURATION
-        const WHATSAPP_NUMBER = "93232605904"; // Aapka number set hai
-        const REFFERAL_BONUS = 15;
+        let isLoginMode = false; 
+        let currentBalance = 0;
+        let activeUsername = "Saeedaskani";
 
-        let currentUser = null;
+        // Toggle between Login and Registration Form View
+        function toggleAuthMode() {
+            isLoginMode = !isLoginMode;
+            const authTitle = document.getElementById('auth-title');
+            const nameGroup = document.getElementById('name-group');
+            const submitBtn = document.getElementById('submit-btn');
+            const toggleText = document.getElementById('toggle-text');
+            const toggleBtn = document.getElementById('toggle-btn');
+            const usernameInput = document.getElementById('username');
 
-        // 1. Auth Logic
-        function toggleAuth(showLogin) {
-            document.getElementById('login-form').classList.toggle('hidden-section', !showLogin);
-            document.getElementById('signup-form').classList.toggle('hidden-section', showLogin);
-        }
-
-        function handleSignup() {
-            const user = document.getElementById('reg-user').value.trim();
-            const pass = document.getElementById('reg-pass').value;
-            const ref = document.getElementById('reg-ref').value.trim();
-
-            if(!user || !pass) return alert("Sari details bharein!");
-            
-            let users = JSON.parse(localStorage.getItem('askani_users') || '{}');
-            if(users[user]) return alert("Yeh username pehle se majood hai!");
-
-            let initialBalance = 0;
-
-            if(ref && users[ref]) {
-                initialBalance = REFFERAL_BONUS;
-                users[ref].balance = parseFloat((users[ref].balance + REFFERAL_BONUS).toFixed(2));
-                alert("Valid Referral Code! Aapko 15 PKR bonus mila.");
-            } else if (ref) {
-                alert("Ghalat referral code! Baghair bonus ke account ban raha hai.");
-            }
-
-            users[user] = { 
-                password: pass, 
-                balance: initialBalance, 
-                refCode: user 
-            };
-            
-            localStorage.setItem('askani_users', JSON.stringify(users));
-            alert("Account kamyabi se ban gaya! Ab login karein.");
-            toggleAuth(true);
-        }
-
-        function handleLogin() {
-            const user = document.getElementById('login-user').value.trim();
-            const pass = document.getElementById('login-pass').value;
-            
-            let users = JSON.parse(localStorage.getItem('askani_users') || '{}');
-            
-            if(users[user] && users[user].password === pass) {
-                currentUser = user;
-                loadDashboard();
+            if (isLoginMode) {
+                authTitle.innerText = "Welcome Back";
+                nameGroup.style.display = "none";
+                usernameInput.removeAttribute('required');
+                submitBtn.innerText = "Login to Dashboard";
+                toggleText.innerText = "Don't have an account?";
+                toggleBtn.innerText = "Register";
             } else {
-                alert("Ghalat Username ya Password!");
+                authTitle.innerText = "Create Account";
+                nameGroup.style.display = "block";
+                usernameInput.setAttribute('required', 'true');
+                submitBtn.innerText = "Register Now";
+                toggleText.innerText = "Already have an account?";
+                toggleBtn.innerText = "Login";
             }
         }
 
-        // 2. Dashboard Logic
-        function loadDashboard() {
-            document.getElementById('auth-section').classList.add('hidden-section');
-            document.getElementById('dashboard-section').classList.remove('hidden-section');
+        // Handle Signup/Login Submission
+        function handleAuth(event) {
+            event.preventDefault();
             
-            updateUIState();
-            generateAds();
+            if (!isLoginMode) {
+                activeUsername = document.getElementById('username').value || "User";
+            }
+
+            // Sync user data to layout elements
+            document.getElementById('user-display').innerText = activeUsername;
+            document.getElementById('referral-display').innerText = activeUsername + " 183";
+            document.getElementById('balance-display').innerText = currentBalance;
+
+            // Switch Screen Panels
+            document.getElementById('auth-section').classList.add('hidden');
+            document.getElementById('dashboard-section').classList.remove('hidden');
+
+            // Render Ads Container dynamically
+            renderAds();
         }
 
-        function updateUIState() {
-            const users = JSON.parse(localStorage.getItem('askani_users'));
-            const data = users[currentUser];
-            
-            document.getElementById('display-name').innerText = currentUser;
-            document.getElementById('balance').innerText = data.balance.toFixed(2);
-            document.getElementById('my-ref-code').innerText = data.refCode;
+        // Generate Ads Grid UI with specific configuration
+        function renderAds() {
+            const container = document.getElementById('ads-container');
+            container.innerHTML = ""; 
 
-            const errorMsg = document.getElementById('withdraw-error-msg');
-            const submitBtn = document.getElementById('submit-withdraw-btn');
+            for (let i = 1; i <= 10; i++) {
+                let baseSeconds = 4 + i; // AD #1 = 5s, AD #2 = 6s, AD #10 = 14s
+                
+                const adBox = document.createElement('button');
+                adBox.id = `ad-box-${i}`;
+                adBox.className = "ad-btn p-4 rounded-lg text-center flex flex-col items-center justify-center cursor-pointer";
+                adBox.onclick = () => startAdTimer(i, baseSeconds);
+
+                adBox.innerHTML = `
+                    <span class="text-[10px] text-gray-400 font-mono tracking-wider block mb-1">AD #${i}</span>
+                    <span id="ad-timer-${i}" class="text-xs font-bold text-blue-400">${baseSeconds}s Timer</span>
+                    <span class="text-[9px] text-green-500 bg-green-900/20 px-1.5 py-0.5 rounded mt-2 font-mono">+1 PKR</span>
+                `;
+                container.appendChild(adBox);
+            }
+        }
+
+        // Dynamic Timer Countdown Function
+        function startAdTimer(adId, seconds) {
+            const timerLabel = document.getElementById(`ad-timer-${adId}`);
+            const adBox = document.getElementById(`ad-box-${adId}`);
+            
+            // Prevent multiple clicks during active watch state
+            adBox.style.pointerEvents = "none";
+            adBox.classList.add('opacity-60');
+
+            let timeLeft = seconds;
+            const interval = setInterval(() => {
+                timeLeft--;
+                if (timeLeft > 0) {
+                    timerLabel.innerText = `${timeLeft}s Left`;
+                } else {
+                    clearInterval(interval);
+                    timerLabel.innerText = "✓ Claimed";
+                    timerLabel.classList.remove('text-blue-400');
+                    timerLabel.classList.add('text-green-400');
+                    
+                    // Add Balance upon complete watch run
+                    currentBalance += 1;
