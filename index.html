@@ -1,29 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Askani Rewards</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://jsdelivr.net" rel="stylesheet">
-    <style>
-        body { background-color: #f3f4f6; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-        .app-container { max-width: 500px; margin: 0 auto; min-height: 100vh; background-color: #ffffff; box-shadow: 0 0 20px rgba(0,0,0,0.05); padding: 20px; }
-        .header-card { background: linear-gradient(135deg, #4f46e5, #7c3aed); color: white; border-radius: 16px; padding: 20px; text-align: center; margin-bottom: 25px; }
-        .btn-custom { background-color: #4f46e5; color: white; border: none; border-radius: 8px; padding: 12px; font-weight: 600; width: 100%; }
-        .btn-custom:hover { background-color: #4338ca; color: white; }
-        .nav-tabs-custom { display: flex; justify-content: space-around; background: #f9fafb; padding: 10px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #e5e7eb; }
-        .nav-item-custom { cursor: pointer; padding: 8px 16px; border-radius: 8px; font-weight: 500; color: #4b5563; }
-        .nav-item-custom.active { background-color: #4f46e5; color: white; }
-        .hidden { display: none !important; }
-        input { font-size: 16px !important; }
-        .task-box { display: flex; justify-content: space-between; align-items: center; background: #f9fafb; padding: 12px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #f3f4f6; }
-    </style>
-</head> 
-
-    <script>
-  // TODO: Apna copy kiya hua Google Web App URL yahan paste karein
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxwxpdHVJRPc8Qhn63Jol_x8TerXcNXzwWLsElIcntH_A21w3DMap4Q30PkUUIozHCJ7g/exec";
+<script>
+  // Aapka ekdum sahi wala link
+  const SCRIPT_URL = "https://google.com";
 
   const loginForm = document.querySelector('form'); 
   if (loginForm) {
@@ -37,18 +14,21 @@
       submitButton.innerText = "Checking...";
       submitButton.disabled = true;
 
+      // Data ko sahi format (URL-Encoded) me badalna taaki Google accept kare
+      const formData = new URLSearchParams();
+      formData.append("action", "login");
+      formData.append("email", emailInput);
+      formData.append("password", passwordInput);
+
       fetch(SCRIPT_URL, {
         method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          action: "login",
-          email: emailInput,
-          password: passwordInput
-        })
+        mode: "no-cors", // Browser security error se bachne ke liye
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: formData.toString()
       })
       .then(() => {
-        alert("Login successful! Redirecting...");
+        alert("Success! Data Sheet me bhej diya gaya hai.");
+        // Login ke baad dashboard page par bhejna
         window.location.href = "dashboard.html"; 
       })
       .catch(error => {
@@ -58,182 +38,4 @@
       });
     });
   }
-    </script>
-    
-<body>
-
-<div class="app-container">
-
-    <!-- ================= CONFIGURATION ================= -->
-    <script>
-        // Aapki sheet ka link direct connect kar diya hai
-        const SHEET_URL = "https://google.com";
-    </script>
-
-    <!-- ================= AUTH SCREEN ================= -->
-    <div id="authScreen">
-        <div class="header-card">
-            <h3>Askani Rewards</h3>
-            <p class="mb-0">Earn points and withdraw to EasyPaisa</p>
-        </div>
-
-        <!-- Login Form -->
-        <div id="loginFormBox">
-            <h5 class="mb-3">Login Account</h5>
-            <div class="mb-3">
-                <label class="form-label">Email Address</label>
-                <input type="email" id="loginEmail" class="form-control" required placeholder="name@example.com">
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Password</label>
-                <input type="password" id="loginPassword" class="form-control" required placeholder="••••••••">
-            </div>
-            <button class="btn-custom mb-3" onclick="handleLogin()">Sign In</button>
-            <p class="text-center text-muted small">Account nahi hai? <a href="#" onclick="toggleAuth(false)">Register karein</a></p>
-        </div>
-
-        <!-- Register Form -->
-        <div id="registerFormBox" class="hidden">
-            <h5 class="mb-3">Naya Account Banayein</h5>
-            <div class="mb-3">
-                <label class="form-label">Full Name</label>
-                <input type="text" id="regName" class="form-control" required placeholder="Aslam Khan">
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Email Address</label>
-                <input type="email" id="regEmail" class="form-control" required placeholder="name@example.com">
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Password</label>
-                <input type="password" id="regPassword" class="form-control" required placeholder="••••••••">
-            </div>
-            <button class="btn-custom mb-3" onclick="handleRegister()">Register Account</button>
-            <p class="text-center text-muted small">Pehle se account hai? <a href="#" onclick="toggleAuth(true)">Login karein</a></p>
-        </div>
-        <div id="authAlert" class="alert d-none mt-3"></div>
-    </div>
-
-    <!-- ================= MAIN APP SCREEN ================= -->
-    <div id="appScreen" class="hidden">
-        <div class="header-card">
-            <h4 id="welcomeUser">KhushAamdeed!</h4>
-            <div class="mt-2 fs-5">Available Balance: <strong id="userBalance">0</strong> Points</div>
-        </div>
-
-        <div class="nav-tabs-custom">
-            <div class="nav-item-custom active" id="tabTasks" onclick="switchTab('tasks')">Tasks</div>
-            <div class="nav-item-custom" id="tabWithdraw" onclick="switchTab('withdraw')">Withdraw</div>
-        </div>
-
-        <!-- TASKS TAB -->
-        <div id="viewTasks">
-            <h5 class="mb-3">Daily Tasks</h5>
-            <div class="task-box">
-                <div>
-                    <h6 class="mb-0">Daily Check-In</h6>
-                    <small class="text-muted">+50 Points</small>
-                </div>
-                <button class="btn btn-sm btn-success" onclick="completeTask('Daily Check-In', 50)">Claim</button>
-            </div>
-        </div>
-
-        <!-- WITHDRAW TAB -->
-        <div id="viewWithdraw" class="hidden">
-            <h5 class="mb-3">Paise Nikalwayein</h5>
-            <div class="mb-3">
-                <label class="form-label">Account Number</label>
-                <input type="tel" id="withdrawNum" class="form-control" placeholder="03XXXXXXXXX">
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Points to Withdraw</label>
-                <input type="number" id="withdrawPoints" class="form-control" placeholder="Minimum 1000">
-            </div>
-            <button class="btn-custom" id="withdrawBtn" onclick="handleWithdraw()">Submit Request</button>
-            <div id="withdrawAlert" class="alert d-none mt-3"></div>
-        </div>
-
-        <button class="btn btn-link btn-sm text-danger w-100 mt-4" onclick="logout()">Log Out Account</button>
-    </div>
-
-</div>
-
-<script>
-    let currentUser = null;
-    // Centralized secure processing API
-    const API_URL = "https://google.com"; 
-
-    function toggleAuth(showLogin) {
-        document.getElementById("loginFormBox").classList.toggle("hidden", !showLogin);
-        document.getElementById("registerFormBox").classList.toggle("hidden", showLogin);
-        document.getElementById("authAlert").classList.add("d-none");
-    }
-
-    function switchTab(tab) {
-        document.getElementById("viewTasks").classList.toggle("hidden", tab !== 'tasks');
-        document.getElementById("viewWithdraw").classList.toggle("hidden", tab !== 'withdraw');
-        document.getElementById("tabTasks").classList.toggle("active", tab === 'tasks');
-        document.getElementById("tabWithdraw").classList.toggle("active", tab === 'withdraw');
-    }
-
-    async function handleRegister() {
-        const name = document.getElementById("regName").value;
-        const email = document.getElementById("regEmail").value;
-        const password = document.getElementById("regPassword").value;
-        if(!name || !email || !password) return alert("Poori detail likhein");
-        showAlert("authAlert", "Processing registration...", "info");
-
-        try {
-            let res = await fetch(API_URL, {
-                method: "POST",
-                body: JSON.stringify({ action: "register", sheetUrl: SHEET_URL, name, email, password })
-            });
-            let data = await res.json();
-            if(data.status === "Success") {
-                showAlert("authAlert", "🎉 Account ban gaya! Login karein.", "success");
-                toggleAuth(true);
-            } else {
-                showAlert("authAlert", "❌ " + data.message, "danger");
-            }
-        } catch(e) { showAlert("authAlert", "Connection Error!", "danger"); }
-    }
-
-    async function handleLogin() {
-        const email = document.getElementById("loginEmail").value;
-        const password = document.getElementById("loginPassword").value;
-        if(!email || !password) return alert("Email aur password likhein");
-        showAlert("authAlert", "Logging in...", "info");
-
-        try {
-            let res = await fetch(API_URL, {
-                method: "POST",
-                body: JSON.stringify({ action: "login", sheetUrl: SHEET_URL, email, password })
-            });
-            let data = await res.json();
-            if(data.status === "Success") {
-                currentUser = data.user;
-                document.getElementById("welcomeUser").innerText = "Hi, " + currentUser.name;
-                document.getElementById("userBalance").innerText = currentUser.balance;
-                document.getElementById("authScreen").classList.add("hidden");
-                document.getElementById("appScreen").classList.remove("hidden");
-            } else {
-                showAlert("authAlert", "❌ " + data.message, "danger");
-            }
-        } catch(e) { showAlert("authAlert", "Login Error!", "danger"); }
-    }
-
-    async function handleWithdraw() {
-        const number = document.getElementById("withdrawNum").value;
-        const points = parseInt(document.getElementById("withdrawPoints").value);
-        if(!number || !points) return alert("Poori detail likhein");
-
-        document.getElementById("withdrawBtn").disabled = true;
-        showAlert("withdrawAlert", "Request bheji ja rahi hai...", "info");
-
-        try {
-            let res = await fetch(API_URL, {
-                method: "POST",
-                body: JSON.stringify({ action: "withdraw", sheetUrl: SHEET_URL, name: currentUser.name, number, points })
-            });
-            let data = await res.json();
-            if(data.status === "Success") {
-                showAlert("withdrawAlert", "🎉 Withdrawal request save ho gayi!", "success");
+</script>
