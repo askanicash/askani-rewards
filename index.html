@@ -3,223 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Askani Cash - Complete Earning Script</title>
+    <title>Askani Cash - Real Earning System</title>
     <style>
-        /* Pure CSS - No Internet Dependency Required */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        body {
-            background-color: #0b111e;
-            color: #ffffff;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            padding: 15px;
-        }
-        .hidden {
-            display: none !important;
-        }
+        /* All-in-One Professional Styling (No External Dependencies) */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: #0b111e; color: #ffffff; min-height: 100vh; display: flex; flex-direction: column; padding: 15px; justify-content: center; align-items: center; }
+        .hidden { display: none !important; }
         
-        /* Auth Screen Styles */
-        .auth-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-grow: 1;
-        }
-        .auth-card {
-            background-color: #161f30;
-            border: 1px solid #232f45;
-            border-radius: 12px;
-            padding: 25px;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-        .auth-card h2 {
-            text-align: center;
-            color: #3b82f6;
-            margin-bottom: 20px;
-            font-size: 24px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-group label {
-            display: block;
-            font-size: 14px;
-            color: #9ca3af;
-            margin-bottom: 5px;
-        }
-        .form-group input {
-            width: 100%;
-            background-color: #0b111e;
-            border: 1px solid #232f45;
-            border-radius: 6px;
-            padding: 10px;
-            color: #white;
-            font-size: 16px;
-            outline: none;
-        }
-        .form-group input:focus {
-            border-color: #3b82f6;
-        }
-        .submit-btn {
-            width: 100%;
-            background-color: #2563eb;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 6px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .submit-btn:hover {
-            background-color: #1d4ed8;
-        }
-        .toggle-p {
-            text-align: center;
-            margin-top: 15px;
-            font-size: 14px;
-            color: #9ca3af;
-        }
-        .toggle-btn {
-            background: none;
-            border: none;
-            color: #3b82f6;
-            font-weight: bold;
-            cursor: pointer;
-            text-decoration: underline;
-            margin-left: 5px;
-        }
+        /* Auth Panel */
+        .auth-card { background-color: #161f30; border: 1px solid #232f45; border-radius: 16px; padding: 30px 20px; width: 100%; max-width: 400px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); }
+        .auth-card h2 { text-align: center; color: #3b82f6; margin-bottom: 25px; font-size: 26px; }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; font-size: 14px; color: #9ca3af; margin-bottom: 6px; }
+        .form-group input { width: 100%; background-color: #0b111e; border: 1px solid #232f45; border-radius: 8px; padding: 12px; color: #ffffff !important; font-size: 16px; outline: none; }
+        .form-group input:focus { border-color: #3b82f6; }
+        .submit-btn { width: 100%; background-color: #2563eb; color: #ffffff; border: none; padding: 14px; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .submit-btn:hover { background-color: #1d4ed8; }
+        .toggle-p { text-align: center; margin-top: 20px; font-size: 14px; color: #9ca3af; }
+        .toggle-btn { background: none; border: none; color: #3b82f6; font-weight: bold; cursor: pointer; text-decoration: underline; margin-left: 5px; }
 
-        /* Dashboard Styles */
-        .dashboard-container {
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
-            flex-grow: 1;
-        }
-        .script-title {
-            font-size: 12px;
-            color: #4b5563;
-            font-family: monospace;
-            margin-bottom: 15px;
-        }
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-        .stat-card {
-            background-color: #161f30;
-            border: 1px solid #232f45;
-            border-radius: 8px;
-            padding: 15px;
-            text-align: center;
-        }
-        .stat-card p:first-child {
-            font-size: 11px;
-            color: #9ca3af;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 5px;
-        }
-        .stat-card p:last-child {
-            font-size: 18px;
-            font-weight: bold;
-        }
-        .balance-text {
-            color: #ffffff;
-            font-size: 22px !important;
-        }
-        .ref-text {
-            color: #3b82f6 !important;
-        }
+        /* Dashboard Panel */
+        .dashboard-container { width: 100%; max-width: 800px; margin: 0 auto; display: none; flex-direction: column; width: 100%; }
+        .script-title { font-size: 12px; color: #4b5563; font-family: monospace; margin-bottom: 15px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px; }
+        .stat-card { background-color: #161f30; border: 1px solid #232f45; border-radius: 8px; padding: 15px; text-align: center; }
+        .stat-card p:first-child { font-size: 11px; color: #9ca3af; text-transform: uppercase; margin-bottom: 5px; }
+        .stat-card p:last-child { font-size: 18px; font-weight: bold; }
+        .balance-text { color: #ffffff; font-size: 22px !important; }
+        .ref-text { color: #3b82f6 !important; }
         
-        /* Nav Buttons */
-        .nav-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 30px;
-        }
-        .nav-btn {
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 500;
-            border: none;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
+        /* Action Buttons */
+        .nav-buttons { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; }
+        .nav-btn { padding: 8px 20px; border-radius: 20px; font-size: 14px; font-weight: 500; border: none; cursor: pointer; }
         .btn-tasks { background-color: #2563eb; color: white; }
         .btn-withdraw { background-color: #1f2937; color: white; }
-        .btn-withdraw:hover { background-color: #374151; }
         .btn-logout { background-color: rgba(153, 27, 27, 0.4); color: #f87171; }
-        .btn-logout:hover { background-color: rgba(153, 27, 27, 0.7); }
 
-        .section-title {
-            text-align: center;
-            font-size: 18px;
-            margin-bottom: 20px;
-            letter-spacing: 0.5px;
-        }
-
-        /* Ads Grid */
-        .ads-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-        }
+        /* Tasks & Ads Grid */
+        .section-title { text-align: center; font-size: 18px; margin-bottom: 20px; }
+        .ads-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; padding-bottom: 40px; }
         @media (min-width: 480px) { .ads-grid { grid-template-columns: repeat(3, 1fr); } }
         @media (min-width: 768px) { .ads-grid { grid-template-columns: repeat(5, 1fr); } }
 
-        .ad-box {
-            background-color: #1c273c;
-            border: 1px solid #2d3d5a;
-            border-radius: 8px;
-            padding: 15px 10px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .ad-box:hover {
-            background-color: #24334f;
-            border-color: #3b82f6;
-        }
-        .ad-id {
-            font-size: 10px;
-            color: #9ca3af;
-            font-family: monospace;
-            margin-bottom: 4px;
-        }
-        .ad-timer {
-            font-size: 13px;
-            font-weight: bold;
-            color: #3b82f6;
-        }
-        .ad-reward {
-            font-size: 9px;
-            color: #10b981;
-            background-color: rgba(6, 78, 59, 0.3);
-            padding: 2px 6px;
-            border-radius: 4px;
-            margin-top: 8px;
-            font-family: monospace;
-        }
+        .ad-box { background-color: #1c273c; border: 1px solid #2d3d5a; border-radius: 8px; padding: 15px 10px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; }
+        .ad-id { font-size: 10px; color: #9ca3af; font-family: monospace; margin-bottom: 4px; }
+        .ad-timer { font-size: 13px; font-weight: bold; color: #3b82f6; }
+        .ad-reward { font-size: 9px; color: #10b981; background-color: rgba(6, 78, 59, 0.3); padding: 2px 6px; border-radius: 4px; margin-top: 8px; }
     </style>
+
+    <!-- Firebase Integration Libraries (Real Database Link) -->
+    <script src="https://gstatic.com"></script>
+    <script src="https://gstatic.com"></script>
+    <script src="https://gstatic.com"></script>
 </head>
 <body>
 
@@ -227,38 +62,31 @@
     <div id="auth-section" class="auth-container">
         <div class="auth-card">
             <h2 id="auth-title">Create Account</h2>
-            
-            <form id="auth-form" onsubmit="handleAuth(event)">
+            <form id="auth-form" onsubmit="processAuth(event)">
                 <div id="name-group" class="form-group">
                     <label>Full Name</label>
-                    <input type="text" id="username" placeholder="e.g. Saeedaskani" required>
+                    <input type="text" id="username" placeholder="e.g. Saeedaskani">
                 </div>
-
                 <div class="form-group">
                     <label>Email Address</label>
                     <input type="email" id="email" placeholder="name@example.com" required>
                 </div>
-
                 <div class="form-group">
                     <label>Password</label>
                     <input type="password" id="password" placeholder="••••••••" required>
                 </div>
-
                 <button type="submit" id="submit-btn" class="submit-btn">Register Now</button>
             </form>
-
             <p class="toggle-p">
                 <span id="toggle-text">Already have an account?</span>
-                <button onclick="toggleAuthMode()" id="toggle-btn" class="toggle-btn">Login</button>
+                <button type="button" onclick="toggleAuthMode()" id="toggle-btn" class="toggle-btn">Login</button>
             </p>
         </div>
     </div>
 
     <!-- 2. MAIN DASHBOARD SECTION -->
-    <div id="dashboard-section" class="dashboard-container hidden">
+    <div id="dashboard-section" class="dashboard-container">
         <div class="script-title"># Askani Cash - Complete Earning Script</div>
-
-        <!-- Top Statistics Cards -->
         <div class="stats-grid">
             <div class="stat-card">
                 <p>Welcome</p>
@@ -274,27 +102,38 @@
             </div>
         </div>
 
-        <!-- Action Navigation Buttons -->
         <div class="nav-buttons">
             <button class="nav-btn btn-tasks">Tasks</button>
-            <button onclick="triggerWithdraw()" class="nav-btn btn-withdraw">Withdraw</button>
-            <button onclick="logout()" class="nav-btn btn-logout">Logout</button>
+            <button type="button" onclick="openWithdrawPanel()" class="nav-btn btn-withdraw">Withdraw</button>
+            <button type="button" onclick="accountLogout()" class="nav-btn btn-logout">Logout</button>
         </div>
 
         <div class="section-title">
             <h3>Daily Tasks (10 Ads)</h3>
         </div>
-
-        <!-- Ads Grid Area -->
-        <div class="ads-grid" id="ads-container">
-            <!-- Dynamic JavaScript Content -->
-        </div>
+        <div class="ads-grid" id="ads-container"></div>
     </div>
 
     <script>
-        let isLoginMode = false; 
-        let currentBalance = 0;
-        let activeUsername = "Saeedaskani";
+        // IMPORTANT: Paste your real Firebase configurations here so data saves forever!
+        const firebaseConfig = {
+            apiKey: "YOUR_FIREBASE_API_KEY",
+            authDomain: "YOUR_PROJECT_://firebaseapp.com",
+            databaseURL: "https://YOUR_PROJECT_://firebaseio.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_://appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+        
+        // Initialize Firebase safely
+        if (firebaseConfig.apiKey !== "YOUR_FIREBASE_API_KEY") {
+            firebase.initializeApp(firebaseConfig);
+        }
+
+        let isLoginMode = false;
+        let currentUserData = { name: "User", balance: 0 };
+        let currentUserId = null;
 
         function toggleAuthMode() {
             isLoginMode = !isLoginMode;
@@ -303,14 +142,41 @@
             const submitBtn = document.getElementById('submit-btn');
             const toggleText = document.getElementById('toggle-text');
             const toggleBtn = document.getElementById('toggle-btn');
-            const usernameInput = document.getElementById('username');
 
             if (isLoginMode) {
                 authTitle.innerText = "Welcome Back";
-                nameGroup.style.display = "none";
-                usernameInput.removeAttribute('required');
+                nameGroup.classList.add('hidden');
                 submitBtn.innerText = "Login to Dashboard";
                 toggleText.innerText = "Don't have an account?";
                 toggleBtn.innerText = "Register";
             } else {
                 authTitle.innerText = "Create Account";
+                nameGroup.classList.remove('hidden');
+                submitBtn.innerText = "Register Now";
+                toggleText.innerText = "Already have an account?";
+                toggleBtn.innerText = "Login";
+            }
+        }
+
+        function processAuth(event) {
+            event.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const fullName = document.getElementById('username').value || "Saeedaskani";
+
+            // If firebase is not configured yet, run locally so you can preview instantly
+            if (firebaseConfig.apiKey === "YOUR_FIREBASE_API_KEY") {
+                currentUserData = { name: fullName, balance: 0 };
+                showDashboard();
+                return;
+            }
+
+            if (isLoginMode) {
+                firebase.auth().signInWithEmailAndPassword(email, password)
+                    .then((userCredential) => {
+                        currentUserId = userCredential.user.uid;
+                        loadUserData();
+                    }).catch((error) => alert("Login Error: " + error.message));
+            } else {
+                firebase.auth().createUserWithEmailAndPassword(email, password)
+                    .then((userCredential) => {
