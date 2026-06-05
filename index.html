@@ -19,7 +19,47 @@
         input { font-size: 16px !important; }
         .task-box { display: flex; justify-content: space-between; align-items: center; background: #f9fafb; padding: 12px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #f3f4f6; }
     </style>
-</head>
+</head> 
+
+    <script>
+  // TODO: Apna copy kiya hua Google Web App URL yahan paste karein
+  const SCRIPT_URL = "YAHAN_APNA_URL_PASTE_KAREIN";
+
+  const loginForm = document.querySelector('form'); 
+  if (loginForm) {
+    loginForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const emailInput = document.querySelector('input[type="email"]').value;
+      const passwordInput = document.querySelector('input[type="password"]').value;
+      const submitButton = document.querySelector('button[type="submit"]');
+
+      submitButton.innerText = "Checking...";
+      submitButton.disabled = true;
+
+      fetch(SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "login",
+          email: emailInput,
+          password: passwordInput
+        })
+      })
+      .then(() => {
+        alert("Login successful! Redirecting...");
+        window.location.href = "dashboard.html"; 
+      })
+      .catch(error => {
+        alert("Error: " + error.message);
+        submitButton.innerText = "Sign In";
+        submitButton.disabled = false;
+      });
+    });
+  }
+    </script>
+    
 <body>
 
 <div class="app-container">
