@@ -4,271 +4,198 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Askani Cash - Earn Online</title>
+    <script src="https://tailwindcss.com"></script>
     <link href="https://googleapis.com" rel="stylesheet">
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
         body {
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
             color: white;
             min-height: 100vh;
-            padding: 20px;
         }
-        .container-box {
-            max-width: 450px;
-            margin: 40px auto;
+        .glass {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 30px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        .dashboard-container {
-            max-width: 800px;
-            margin: 20px auto;
-        }
-        h1 {
-            color: #3b82f6;
-            font-size: 2.2rem;
-            margin-bottom: 20px;
-            font-weight: 700;
-        }
-        h2 {
-            font-size: 1.4rem;
-            margin-bottom: 20px;
-            color: #f1f5f9;
-        }
-        input, select {
-            width: 100%;
-            padding: 14px;
-            margin-bottom: 18px;
-            border-radius: 12px;
-            border: 1px solid #334155;
-            background-color: #1e293b;
-            color: white;
-            font-size: 1rem;
-            outline: none;
-        }
-        input:focus, select:focus {
-            border-color: #3b82f6;
+            border-radius: 1.5rem;
         }
         .btn-gradient {
-            width: 100%;
-            padding: 14px;
-            border-radius: 12px;
-            border: none;
             background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
-            color: white;
-            font-weight: bold;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            transition: all 0.3s ease;
         }
         .btn-gradient:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
         }
-        .link-text {
-            margin-top: 18px;
-            font-size: 0.95rem;
-            color: #94a3b8;
-        }
-        .link-text span {
-            color: #3b82f6;
-            text-decoration: underline;
-            cursor: pointer;
-        }
-        .hidden-section {
-            display: none !important;
-        }
-        
-        /* Stats System */
-        .stats-grid {
-            display: grid;
-            grid-template-cols: 1fr;
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-        @media (min-width: 600px) {
-            .stats-grid { grid-template-columns: 1fr 1fr 1fr; }
-        }
-        .stat-card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 15px;
-            text-align: center;
-        }
-        .stat-card p { font-size: 0.85rem; color: #94a3b8; }
-        .stat-card h3 { font-size: 1.5rem; margin-top: 5px; font-weight: 700; }
-        .balance-highlight { border-bottom: 4px solid #10b981; }
-
-        /* Navigation System */
-        .tabs-menu {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
-        }
-        .tab-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white;
-            padding: 10px 22px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-        .tab-btn.active {
-            border-color: #3b82f6;
-            color: #3b82f6;
-            background: rgba(59, 130, 246, 0.1);
-        }
-        .logout-btn {
-            background: rgba(220, 38, 38, 0.2);
-            color: #ef4444;
-            border: 1px solid rgba(220, 38, 38, 0.4);
-        }
-
-        /* Tasks Layout */
-        .ads-grid {
-            display: grid;
-            grid-template-cols: 1fr 1fr;
-            gap: 15px;
-        }
-        @media (min-width: 600px) {
-            .ads-grid { grid-template-columns: repeat(5, 1fr); }
-        }
-        .ad-card {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            padding: 18px;
-            border-radius: 16px;
-            text-align: center;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            transition: background 0.2s;
-        }
-        .ad-card:hover { background: rgba(255, 255, 255, 0.08); }
-        .ad-locked {
-            pointer-events: none;
-            opacity: 0.4;
-            background: rgba(220, 38, 38, 0.08);
-            border-color: rgba(220, 38, 38, 0.25);
-        }
+        .hidden-section { display: none; }
         .timer-active { pointer-events: none; opacity: 0.6; }
-
-        /* Spinner Animations */
-        .wheel-box {
-            position: relative;
-            width: 180px;
-            height: 180px;
-            margin: 20px auto;
-            border-radius: 50%;
-            border: 6px solid #3b82f6;
-            background: conic-gradient(#ef4444 0% 16.6%, #f59e0b 16.6% 33.2%, #10b981 33.2% 49.8%, #3b82f6 49.8% 66.4%, #8b5cf6 66.4% 83%, #ec4899 83% 100%);
-            transition: transform 4s cubic-bezier(0.1, 0.8, 0.3, 1);
-        }
-        .wheel-pointer {
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 0;
-            border-left: 12px solid transparent;
-            border-right: 12px solid transparent;
-            border-top: 20px solid #ffffff;
-            z-index: 10;
-        }
-        .error-banner {
-            background: rgba(220, 38, 38, 0.15);
-            border: 1px solid #ef4444;
-            color: #fca5a5;
-            padding: 14px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            font-size: 0.95rem;
-            text-align: center;
-        }
     </style>
 </head>
-<body>
+<body class="p-4 md:p-8">
 
-    <!-- Auth View Framework -->
-    <div id="auth-section" class="container-box">
-        <h1>Askani Cash</h1>
-        
-        <!-- Login Form Wrapper (No structural <form> tag to avoid reload block) -->
-        <div id="login-form-view">
-            <h2>Login Account</h2>
-            <input type="text" id="login-user" placeholder="Enter Username">
-            <input type="password" id="login-pass" placeholder="Enter Password">
-            <button type="button" onclick="handleLoginDirect()" class="btn-gradient">Sign In</button>
-            <p class="link-text">Don't have an account? <span onclick="toggleAuthView(false)">Create Account</span></p>
-        </div>
+    <!-- Auth Section (Login/Signup) -->
+    <div id="auth-section" class="max-w-md mx-auto mt-10">
+        <div class="glass p-8 text-center">
+            <h1 class="text-3xl font-bold mb-6 text-blue-400">Askani Cash</h1>
+            
+            <div id="login-form">
+                <h2 class="text-xl mb-4">Login</h2>
+                <input type="text" id="login-user" placeholder="Username" class="w-full p-3 mb-3 rounded-lg bg-slate-800 border border-slate-700 focus:outline-none focus:border-blue-500">
+                <input type="password" id="login-pass" placeholder="Password" class="w-full p-3 mb-6 rounded-lg bg-slate-800 border border-slate-700 focus:outline-none focus:border-blue-500">
+                <button onclick="handleLogin()" class="w-full btn-gradient p-3 rounded-lg font-bold">Sign In</button>
+                <p class="mt-4 text-sm text-slate-400">Account nahi hai? <a href="#" onclick="toggleAuth(false)" class="text-blue-400 underline">Create Account</a></p>
+            </div>
 
-        <!-- Registration View Wrapper -->
-        <div id="signup-form-view" class="hidden-section">
-            <h2>Create Account</h2>
-            <input type="text" id="reg-user" placeholder="Choose Username">
-            <input type="password" id="reg-pass" placeholder="Choose Password">
-            <input type="text" id="reg-ref" placeholder="Referral Username (Optional)">
-            <button type="button" onclick="handleSignupDirect()" class="btn-gradient">Sign Up</button>
-            <p class="link-text">Already have an account? <span onclick="toggleAuthView(true)">Login Here</span></p>
+            <div id="signup-form" class="hidden-section">
+                <h2 class="text-xl mb-4">Create Account</h2>
+                <input type="text" id="reg-user" placeholder="Username" class="w-full p-3 mb-3 rounded-lg bg-slate-800 border border-slate-700">
+                <input type="password" id="reg-pass" placeholder="Password" class="w-full p-3 mb-3 rounded-lg bg-slate-800 border border-slate-700">
+                <input type="text" id="reg-ref" placeholder="Referral Code (Optional)" class="w-full p-3 mb-6 rounded-lg bg-slate-800 border border-slate-700">
+                <button onclick="handleSignup()" class="w-full btn-gradient p-3 rounded-lg font-bold">Sign Up</button>
+                <p class="mt-4 text-sm text-slate-400">Pehle se account hai? <a href="#" onclick="toggleAuth(true)" class="text-blue-400 underline">Login</a></p>
+            </div>
         </div>
     </div>
 
-    <!-- Live Operational Dashboard Context -->
-    <div id="dashboard-section" class="dashboard-container hidden-section">
-        <div class="stats-grid">
-            <div class="stat-card">
-                <p>Welcome back,</p>
-                <h3 id="display-name">User</h3>
+    <!-- Main Dashboard Section -->
+    <div id="dashboard-section" class="max-w-4xl mx-auto hidden-section">
+        <!-- Header Info -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+            <div class="glass p-6 text-center">
+                <p class="text-slate-400 text-sm">Welcome,</p>
+                <h3 id="display-name" class="text-xl font-bold">User</h3>
             </div>
-            <div class="stat-card balance-highlight">
-                <p>Total Balance</p>
-                <h3>PKR <span id="balance">0.00</span></h3>
+            <div class="glass p-6 text-center border-b-4 border-blue-500">
+                <p class="text-slate-400 text-sm">Total Balance</p>
+                <h3 class="text-3xl font-bold">PKR <span id="balance">0.00</span></h3>
             </div>
-            <div class="stat-card">
-                <p>Your Referral Code</p>
-                <h3 id="my-ref-code" style="color:#93c5fd; font-family:monospace;">-</h3>
+            <div class="glass p-6 text-center">
+                <p class="text-slate-400 text-sm">Referral Code</p>
+                <h3 id="my-ref-code" class="text-lg font-mono text-blue-300">ABC123</h3>
             </div>
         </div>
 
-        <div class="tabs-menu">
-            <button onclick="showTab('tasks')" id="tab-btn-tasks" class="tab-btn active">Daily Ads</button>
-            <button onclick="showTab('spin')" id="tab-btn-spin" class="tab-btn">Lucky Spin</button>
-            <button onclick="showTab('withdraw')" id="tab-btn-withdraw" class="tab-btn">Withdraw Cash</button>
-            <button onclick="logout()" class="tab-btn logout-btn">Logout</button>
+        <!-- Navigation Tabs -->
+        <div class="flex justify-center gap-4 mb-8">
+            <button onclick="showTab('tasks')" class="px-6 py-2 rounded-full glass border-blue-500 text-blue-400">Tasks</button>
+            <button onclick="showTab('withdraw')" class="px-6 py-2 rounded-full glass">Withdraw</button>
+            <button onclick="logout()" class="px-6 py-2 rounded-full bg-red-900/30 text-red-400">Logout</button>
         </div>
 
-        <!-- System Task Sheets -->
-        <div id="tab-tasks" class="tab-content container-box" style="max-width:100%; width:100%;">
-            <h2>Daily Video Tasks</h2>
-            <p style="font-size:0.85rem; color:#94a3b8; margin-bottom:20px;">Earn points per click. Completed ads freeze for 12 hours.</p>
-            <div class="ads-grid" id="ads-container"></div>
+        <!-- Tasks Tab -->
+        <div id="tab-tasks" class="tab-content">
+            <h2 class="text-2xl font-bold mb-6 text-center">Daily Tasks (10 Ads)</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4" id="ads-container">
+                <!-- Ad buttons generated automatically by JS -->
+            </div>
         </div>
 
-        <!-- Fortune Lucky Spin System -->
-        <div id="tab-spin" class="tab-content container-box hidden-section">
-            <h2>Lucky Wheel Spin</h2>
-            <p style="font-size:0.85rem; color:#94a3b8; margin-bottom:15px;">Spin once every 24 hours to win up to Rs. 10.00 randomly!</p>
+        <!-- Withdraw Tab -->
+        <div id="tab-withdraw" class="tab-content hidden-section">
+            <div class="max-w-md mx-auto glass p-8">
+                <h2 class="text-2xl font-bold mb-6 text-center">Withdrawal</h2>
+                <p class="text-sm text-slate-400 mb-6 text-center">Minimum Withdrawal: 100 PKR</p>
+                
+                <!-- Balance Check Warning -->
+                <div id="withdraw-error-msg" class="bg-red-950/50 border border-red-500 text-red-300 p-4 rounded-lg mb-6 text-center font-medium">
+                    ❌ Aapka Rs. 100 complete nahi hai! Pehle balance mukammal karein.
+                </div>
+
+                <!-- Input Form Details -->
+                <div id="withdraw-form-fields" class="space-y-4">
+                    <select id="pay-method" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700">
+                        <option value="EasyPaisa">EasyPaisa</option>
+                        <option value="JazzCash">JazzCash</option>
+                        <option value="SadaPay">SadaPay</option>
+                        <option value="FaucetPay">FaucetPay</option>
+                        <option value="Bank Account">Bank Transfer</option>
+                    </select>
+                    <input type="text" id="pay-number" placeholder="Account Number" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700">
+                    <input type="text" id="pay-name" placeholder="Account Holder Name" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700">
+                    <input type="number" step="0.01" id="pay-amount" placeholder="Amount (PKR)" class="w-full p-3 rounded-lg bg-slate-800 border border-slate-700">
+                    
+                    <button onclick="processWithdraw()" id="submit-withdraw-btn" class="w-full btn-gradient p-3 rounded-lg font-bold mt-4">
+                        Submit to WhatsApp
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // CONFIGURATION
+        const WHATSAPP_NUMBER = "93232605904"; // Aapka number set hai
+        const REFFERAL_BONUS = 15;
+
+        let currentUser = null;
+
+        // 1. Auth Logic
+        function toggleAuth(showLogin) {
+            document.getElementById('login-form').classList.toggle('hidden-section', !showLogin);
+            document.getElementById('signup-form').classList.toggle('hidden-section', showLogin);
+        }
+
+        function handleSignup() {
+            const user = document.getElementById('reg-user').value.trim();
+            const pass = document.getElementById('reg-pass').value;
+            const ref = document.getElementById('reg-ref').value.trim();
+
+            if(!user || !pass) return alert("Sari details bharein!");
             
-            <div style="position:relative; width:180px; height:180px; margin:0 auto 20px;">
-                <div class="wheel-pointer"></div>
-                <div id="wheel" class="wheel-box"></div>
-            </div>
+            let users = JSON.parse(localStorage.getItem('askani_users') || '{}');
+            if(users[user]) return alert("Yeh username pehle se majood hai!");
 
-            <div id="spin-status" style="margin-bottom:15px; font-weight:bold; color:#f59e0b; font-size:1.1rem;"></div>
-            <button onclick="spinWheel()" id="spin-btn" class="btn-gradient">Spin Now</button>
+            let initialBalance = 0;
+
+            if(ref && users[ref]) {
+                initialBalance = REFFERAL_BONUS;
+                users[ref].balance = parseFloat((users[ref].balance + REFFERAL_BONUS).toFixed(2));
+                alert("Valid Referral Code! Aapko 15 PKR bonus mila.");
+            } else if (ref) {
+                alert("Ghalat referral code! Baghair bonus ke account ban raha hai.");
+            }
+
+            users[user] = { 
+                password: pass, 
+                balance: initialBalance, 
+                refCode: user 
+            };
+            
+            localStorage.setItem('askani_users', JSON.stringify(users));
+            alert("Account kamyabi se ban gaya! Ab login karein.");
+            toggleAuth(true);
+        }
+
+        function handleLogin() {
+            const user = document.getElementById('login-user').value.trim();
+            const pass = document.getElementById('login-pass').value;
+            
+            let users = JSON.parse(localStorage.getItem('askani_users') || '{}');
+            
+            if(users[user] && users[user].password === pass) {
+                currentUser = user;
+                loadDashboard();
+            } else {
+                alert("Ghalat Username ya Password!");
+            }
+        }
+
+        // 2. Dashboard Logic
+        function loadDashboard() {
+            document.getElementById('auth-section').classList.add('hidden-section');
+            document.getElementById('dashboard-section').classList.remove('hidden-section');
+            
+            updateUIState();
+            generateAds();
+        }
+
+        function updateUIState() {
+            const users = JSON.parse(localStorage.getItem('askani_users'));
+            const data = users[currentUser];
+            
+            document.getElementById('display-name').innerText = currentUser;
+            document.getElementById('balance').innerText = data.balance.toFixed(2);
+            document.getElementById('my-ref-code').innerText = data.refCode;
+
+            const errorMsg = document.getElementById('withdraw-error-msg');
+            const submitBtn = document.getElementById('submit-withdraw-btn');
