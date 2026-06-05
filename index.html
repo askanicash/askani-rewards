@@ -9,19 +9,21 @@
         body { background: #0f172a; color: #f8fafc; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
         .container { background: #1e293b; padding: 30px; border-radius: 12px; width: 100%; max-width: 450px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); text-align: center; }
         h2 { margin-bottom: 20px; color: #38bdf8; }
-        input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 6px; border: 1px solid #475569; background: #334155; color: white; font-size: 16px; }
+        input, select { width: 100%; padding: 12px; margin: 10px 0; border-radius: 6px; border: 1px solid #475569; background: #334155; color: white; font-size: 16px; }
         button { width: 100%; padding: 12px; background: #0284c7; border: none; color: white; font-size: 16px; font-weight: bold; border-radius: 6px; cursor: pointer; margin-top: 10px; transition: 0.2s; }
         button:hover { background: #0369a1; }
         .link { margin-top: 15px; font-size: 14px; color: #94a3b8; cursor: pointer; display: inline-block; }
         .link:hover { color: #38bdf8; }
         .hidden { display: none; }
         
-        /* Dashboard Styles */
+        /* Dashboard & Custom Styles */
         .stats-box { background: #334155; padding: 15px; border-radius: 8px; margin: 15px 0; font-size: 18px; font-weight: bold; color: #4ade80; }
-        .ad-card { background: #1e293b; border: 2px solid #475569; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: left; position: relative; }
+        .ad-card { background: #1e293b; border: 2px solid #475569; padding: 15px; border-radius: 8px; margin: 15px 0; text-align: left; }
         .ad-title { font-weight: bold; font-size: 16px; color: #f8fafc; }
         .ad-reward { color: #38bdf8; font-size: 14px; margin-top: 5px; }
-        .timer { font-weight: bold; color: #f43f5e; margin-top: 5px; }
+        .timer { font-weight: bold; color: #f43f5e; margin-top: 5px; text-align: center; }
+        .nav-btn { background: #10b981; margin-bottom: 10px; }
+        .nav-btn:hover { background: #059669; }
     </style>
 </head>
 <body>
@@ -33,7 +35,7 @@
         <input type="email" id="login-email" placeholder="Enter Email" required>
         <input type="password" id="login-pass" placeholder="Enter Password" required>
         <button onclick="handleLogin()">Sign In</button>
-        <span class="link" onclick="switchScreen('register-screen')">Naya Account Banayein (Register)</span>
+        <span class="link" onclick="switchScreen('register-screen')">Create an Account (Register)</span>
     </div>
 
     <!-- 2. REGISTER SCREEN -->
@@ -42,67 +44,113 @@
         <input type="email" id="reg-email" placeholder="Enter Email" required>
         <input type="password" id="reg-pass" placeholder="Enter Password" required>
         <button onclick="handleRegister()">Register Now</button>
-        <span class="link" onclick="switchScreen('login-screen')">Pehle se account hai? Login karein</span>
+        <span class="link" onclick="switchScreen('login-screen')">Already have an account? Login</span>
     </div>
 
     <!-- 3. PTC DASHBOARD SCREEN -->
     <div id="dashboard-screen" class="hidden">
         <h2>Welcome to Dashboard</h2>
-        <p id="user-display" style="color: #94a3b8; font-size: 14px;"></p>
+        <p id="user-display" style="color: #94a3b8; font-size: 14px; margin-bottom: 10px;"></p>
         
         <div class="stats-box">
             Your Balance: <span id="balance">0.00</span> PKR
         </div>
 
+        <button class="nav-btn" onclick="switchScreen('withdraw-screen')">💸 Withdraw Money</button>
+
         <h3 style="margin-top: 20px; text-align: left; color: #38bdf8;">Available Ads To Click</h3>
         
-        <!-- Ad 1 -->
-        <div class="ad-card" id="ad1">
-            <div class="ad-title">Earn Money Online - Ad #1</div>
-            <div class="ad-reward">Reward: 5.00 PKR | Duration: 10 Sec</div>
-            <button id="btn-ad1" onclick="watchAd('ad1', 10, 5)">Watch Ad</button>
-            <div id="timer-ad1" class="timer hidden">Watching: <span id="count-ad1">10</span>s</div>
-        </div>
+        <div id="ads-container">
+            <!-- Ad 1 -->
+            <div class="ad-card" id="ad1">
+                <div class="ad-title">Earn Money Online - Ad #1</div>
+                <div class="ad-reward">Reward: 5.00 PKR | Duration: 10 Sec</div>
+                <button id="btn-ad1" onclick="watchAd('ad1', 10, 5)">Watch Ad</button>
+                <div id="timer-ad1" class="timer hidden">Watching: <span id="count-ad1">10</span>s</div>
+            </div>
 
-        <!-- Ad 2 -->
-        <div class="ad-card" id="ad2">
-            <div class="ad-title">Best Crypto Trading - Ad #2</div>
-            <div class="ad-reward">Reward: 10.00 PKR | Duration: 15 Sec</div>
-            <button id="btn-ad2" onclick="watchAd('ad2', 15, 10)">Watch Ad</button>
-            <div id="timer-ad2" class="timer hidden">Watching: <span id="count-ad2">15</span>s</div>
+            <!-- Ad 2 -->
+            <div class="ad-card" id="ad2">
+                <div class="ad-title">Best Crypto Trading - Ad #2</div>
+                <div class="ad-reward">Reward: 10.00 PKR | Duration: 15 Sec</div>
+                <button id="btn-ad2" onclick="watchAd('ad2', 15, 10)">Watch Ad</button>
+                <div id="timer-ad2" class="timer hidden">Watching: <span id="count-ad2">15</span>s</div>
+            </div>
+
+            <!-- Ad 3 -->
+            <div class="ad-card" id="ad3">
+                <div class="ad-title">Work From Home Jobs - Ad #3</div>
+                <div class="ad-reward">Reward: 15.00 PKR | Duration: 20 Sec</div>
+                <button id="btn-ad3" onclick="watchAd('ad3', 20, 15)">Watch Ad</button>
+                <div id="timer-ad3" class="timer hidden">Watching: <span id="count-ad3">20</span>s</div>
+            </div>
+
+            <!-- Ad 4 -->
+            <div class="ad-card" id="ad4">
+                <div class="ad-title">Easy Typing Task - Ad #4</div>
+                <div class="ad-reward">Reward: 20.00 PKR | Duration: 25 Sec</div>
+                <button id="btn-ad4" onclick="watchAd('ad4', 25, 20)">Watch Ad</button>
+                <div id="timer-ad4" class="timer hidden">Watching: <span id="count-ad4">25</span>s</div>
+            </div>
+
+            <!-- Ad 5 -->
+            <div class="ad-card" id="ad5">
+                <div class="ad-title">Mega Fortune Spin - Ad #5</div>
+                <div class="ad-reward">Reward: 30.00 PKR | Duration: 30 Sec</div>
+                <button id="btn-ad5" onclick="watchAd('ad5', 30, 30)">Watch Ad</button>
+                <div id="timer-ad5" class="timer hidden">Watching: <span id="count-ad5">30</span>s</div>
+            </div>
         </div>
 
         <button onclick="logout()" style="background: #475569; margin-top: 20px;">Logout</button>
     </div>
+
+    <!-- 4. WITHDRAW SCREEN -->
+    <div id="withdraw-screen" class="hidden">
+        <h2>Withdraw Earnings</h2>
+        <p style="color: #94a3b8; font-size: 14px; margin-bottom: 15px;">Minimum Withdraw Limit: 100 PKR</p>
+        
+        <select id="withdraw-method" onchange="updateWithdrawPlaceholder()">
+            <option value="EasyPaisa">EasyPaisa</option>
+            <option value="JazzCash">JazzCash</option>
+            <option value="FaucetPay">FaucetPay (Crypto Wallet)</option>
+        </select>
+        
+        <input type="text" id="withdraw-account" placeholder="Account Number (e.g. 03xxxxxxxxx)">
+        <input type="text" id="withdraw-name" placeholder="Account Title Name">
+        <input type="number" id="withdraw-amount" placeholder="Enter Amount in PKR">
+        
+        <button onclick="handleWithdraw()" style="background: #e11d48;">Submit Withdraw Request</button>
+        <button onclick="switchScreen('dashboard-screen')" style="background: #475569; margin-top: 10px;">Back to Dashboard</button>
+    </div>
 </div>
 
 <script>
-    // System Screen Switching
     function switchScreen(screenId) {
         document.getElementById('login-screen').classList.add('hidden');
         document.getElementById('register-screen').classList.add('hidden');
         document.getElementById('dashboard-screen').classList.add('hidden');
+        document.getElementById('withdraw-screen').classList.add('hidden');
         document.getElementById(screenId).classList.remove('hidden');
+        
+        if(screenId === 'dashboard-screen') {
+            document.getElementById('balance').innerText = currentBalance.toFixed(2);
+        }
     }
 
-    // LocalStorage based Data Management
     let currentBalance = parseFloat(localStorage.getItem('ptc_balance')) || 0.00;
-    let registeredUser = JSON.parse(localStorage.getItem('ptc_user')) || null;
 
-    // Register Logic
     function handleRegister() {
         const email = document.getElementById('reg-email').value;
         const pass = document.getElementById('reg-pass').value;
-
         if(!email || !pass) { alert("Please fill all fields!"); return; }
-
         localStorage.setItem('ptc_user', JSON.stringify({ email: email, pass: pass }));
         localStorage.setItem('ptc_balance', '0.00');
-        alert("Account Successfully Created! Ab login karein.");
+        currentBalance = 0.00;
+        alert("Account Successfully Created! Now you can login.");
         switchScreen('login-screen');
     }
 
-    // Login Logic
     function handleLogin() {
         const email = document.getElementById('login-email').value;
         const pass = document.getElementById('login-pass').value;
@@ -110,14 +158,12 @@
 
         if (user && user.email === email && user.pass === pass) {
             document.getElementById('user-display').innerText = "Logged in as: " + email;
-            document.getElementById('balance').innerText = currentBalance.toFixed(2);
             switchScreen('dashboard-screen');
         } else {
-            alert("Galat Email ya Password! Pehle Register karein agar account nahi hai.");
+            alert("Invalid Email or Password! Please register first.");
         }
     }
 
-    // PTC Ad Watching Logic
     function watchAd(adId, duration, reward) {
         const btn = document.getElementById('btn-' + adId);
         const timerDiv = document.getElementById('timer-' + adId);
@@ -134,9 +180,8 @@
             if (timeLeft <= 0) {
                 clearInterval(interval);
                 timerDiv.classList.add('hidden');
-                document.getElementById(adId).innerHTML = "<p style='color: #4ade80; font-weight: bold;'>✓ Ad Completed! Amount Added.</p>";
+                document.getElementById(adId).innerHTML = "<p style='color: #4ade80; font-weight: bold; text-align:center;'>✓ Ad Completed! Amount Added.</p>";
                 
-                // Add balance
                 currentBalance += reward;
                 localStorage.setItem('ptc_balance', currentBalance);
                 document.getElementById('balance').innerText = currentBalance.toFixed(2);
@@ -144,15 +189,10 @@
         }, 1000);
     }
 
-    // Logout
-    function logout() {
-        switchScreen('login-screen');
-    }
-
-    // Auto login check agar session active ho
-    window.onload = function() {
-        // Shuru me login screen hi dikhegi
-    }
-</script>
-</body>
-</html>
+    function updateWithdrawPlaceholder() {
+        const method = document.getElementById('withdraw-method').value;
+        const accountInput = document.getElementById('withdraw-account');
+        const nameInput = document.getElementById('withdraw-name');
+        
+        if(method === 'FaucetPay') {
+            accountInput.placeholder = "FaucetPay Linked Email Address";
