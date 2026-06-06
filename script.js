@@ -1,4 +1,4 @@
-```javascript
+``javascript
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
