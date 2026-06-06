@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Askani Cash - Real Earning System</title>
+    <title>Askani Cash - Real Earning System with Admin Panel</title>
     <style>
-        /* All-in-One Professional Styling (No External Dependencies) */
+        /* All-in-One Professional Styling */
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
         body { background-color: #0b111e; color: #ffffff; min-height: 100vh; display: flex; flex-direction: column; padding: 15px; justify-content: center; align-items: center; }
         .hidden { display: none !important; }
         
         /* Auth Panel */
+        .auth-container { display: flex; align-items: center; justify-content: center; width: 100%; padding: 10px; }
         .auth-card { background-color: #161f30; border: 1px solid #232f45; border-radius: 16px; padding: 30px 20px; width: 100%; max-width: 400px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); }
         .auth-card h2 { text-align: center; color: #3b82f6; margin-bottom: 25px; font-size: 26px; }
         .form-group { margin-bottom: 18px; }
@@ -22,8 +23,8 @@
         .toggle-p { text-align: center; margin-top: 20px; font-size: 14px; color: #9ca3af; }
         .toggle-btn { background: none; border: none; color: #3b82f6; font-weight: bold; cursor: pointer; text-decoration: underline; margin-left: 5px; }
 
-        /* Dashboard Panel */
-        .dashboard-container { width: 100%; max-width: 800px; margin: 0 auto; display: none; flex-direction: column; width: 100%; }
+        /* Dashboard & Admin Panels */
+        .dashboard-container, .admin-container { width: 100%; max-width: 800px; margin: 0 auto; display: none; flex-direction: column; }
         .script-title { font-size: 12px; color: #4b5563; font-family: monospace; margin-bottom: 15px; }
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px; }
         .stat-card { background-color: #161f30; border: 1px solid #232f45; border-radius: 8px; padding: 15px; text-align: center; }
@@ -40,7 +41,7 @@
         .btn-logout { background-color: rgba(153, 27, 27, 0.4); color: #f87171; }
 
         /* Tasks & Ads Grid */
-        .section-title { text-align: center; font-size: 18px; margin-bottom: 20px; }
+        .section-title { text-align: center; font-size: 18px; margin-bottom: 20px; color: #3b82f6; border-bottom: 1px solid #232f45; padding-bottom: 10px; }
         .ads-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; padding-bottom: 40px; }
         @media (min-width: 480px) { .ads-grid { grid-template-columns: repeat(3, 1fr); } }
         @media (min-width: 768px) { .ads-grid { grid-template-columns: repeat(5, 1fr); } }
@@ -49,9 +50,21 @@
         .ad-id { font-size: 10px; color: #9ca3af; font-family: monospace; margin-bottom: 4px; }
         .ad-timer { font-size: 13px; font-weight: bold; color: #3b82f6; }
         .ad-reward { font-size: 9px; color: #10b981; background-color: rgba(6, 78, 59, 0.3); padding: 2px 6px; border-radius: 4px; margin-top: 8px; }
+
+        /* Admin Table Styles */
+        .admin-table-wrapper { background-color: #161f30; border: 1px solid #232f45; border-radius: 12px; padding: 15px; overflow-x: auto; margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
+        th, td { padding: 12px; border-bottom: 1px solid #232f45; }
+        th { color: #9ca3af; text-transform: uppercase; font-size: 12px; }
+        .status-badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .status-pending { background-color: rgba(217, 119, 6, 0.2); color: #fbbf24; }
+        .status-approved { background-color: rgba(16, 185, 129, 0.2); color: #34d399; }
+        .action-btn { padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: bold; border: none; cursor: pointer; margin-right: 5px; }
+        .btn-approve { background-color: #10b981; color: white; }
+        .btn-reject { background-color: #ef4444; color: white; }
     </style>
 
-    <!-- Firebase Integration Libraries (Real Database Link) -->
+    <!-- Firebase Integration Libraries -->
     <script src="https://gstatic.com"></script>
     <script src="https://gstatic.com"></script>
     <script src="https://gstatic.com"></script>
@@ -84,7 +97,7 @@
         </div>
     </div>
 
-    <!-- 2. MAIN DASHBOARD SECTION -->
+    <!-- 2. MAIN USER DASHBOARD SECTION -->
     <div id="dashboard-section" class="dashboard-container">
         <div class="script-title"># Askani Cash - Complete Earning Script</div>
         <div class="stats-grid">
@@ -114,6 +127,48 @@
         <div class="ads-grid" id="ads-container"></div>
     </div>
 
+    <!-- 3. SECRET ADMIN PANEL SECTION -->
+    <div id="admin-section" class="admin-container">
+        <div class="script-title"># Askani Cash - Secret Admin Control Panel</div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <p>Total Registered Users</p>
+                <p id="admin-total-users">0</p>
+            </div>
+            <div class="stat-card">
+                <p>Pending Withdrawals</p>
+                <p id="admin-pending-count" class="ref-text">0 Requests</p>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <button type="button" onclick="accountLogout()" class="nav-btn btn-logout">Secure Admin Logout</button>
+        </div>
+
+        <div class="section-title">
+            <h3>User Withdrawal Requests</h3>
+        </div>
+        
+        <div class="admin-table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>User Name</th>
+                        <th>Method</th>
+                        <th>Account No</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="admin-withdraw-table">
+                    <!-- Dynamic Requests Data -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     <script>
         // IMPORTANT: Paste your real Firebase configurations here so data saves forever!
         const firebaseConfig = {
@@ -124,59 +179,4 @@
             storageBucket: "YOUR_PROJECT_://appspot.com",
             messagingSenderId: "YOUR_SENDER_ID",
             appId: "YOUR_APP_ID"
-        };
-        
-        // Initialize Firebase safely
-        if (firebaseConfig.apiKey !== "YOUR_FIREBASE_API_KEY") {
-            firebase.initializeApp(firebaseConfig);
-        }
-
-        let isLoginMode = false;
-        let currentUserData = { name: "User", balance: 0 };
-        let currentUserId = null;
-
-        function toggleAuthMode() {
-            isLoginMode = !isLoginMode;
-            const authTitle = document.getElementById('auth-title');
-            const nameGroup = document.getElementById('name-group');
-            const submitBtn = document.getElementById('submit-btn');
-            const toggleText = document.getElementById('toggle-text');
-            const toggleBtn = document.getElementById('toggle-btn');
-
-            if (isLoginMode) {
-                authTitle.innerText = "Welcome Back";
-                nameGroup.classList.add('hidden');
-                submitBtn.innerText = "Login to Dashboard";
-                toggleText.innerText = "Don't have an account?";
-                toggleBtn.innerText = "Register";
-            } else {
-                authTitle.innerText = "Create Account";
-                nameGroup.classList.remove('hidden');
-                submitBtn.innerText = "Register Now";
-                toggleText.innerText = "Already have an account?";
-                toggleBtn.innerText = "Login";
-            }
-        }
-
-        function processAuth(event) {
-            event.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const fullName = document.getElementById('username').value || "Saeedaskani";
-
-            // If firebase is not configured yet, run locally so you can preview instantly
-            if (firebaseConfig.apiKey === "YOUR_FIREBASE_API_KEY") {
-                currentUserData = { name: fullName, balance: 0 };
-                showDashboard();
-                return;
-            }
-
-            if (isLoginMode) {
-                firebase.auth().signInWithEmailAndPassword(email, password)
-                    .then((userCredential) => {
-                        currentUserId = userCredential.user.uid;
-                        loadUserData();
-                    }).catch((error) => alert("Login Error: " + error.message));
-            } else {
-                firebase.auth().createUserWithEmailAndPassword(email, password)
-                    .then((userCredential) => {
+              </div>
