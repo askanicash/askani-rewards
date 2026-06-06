@@ -1,52 +1,136 @@
-let points = Number(localStorage.getItem("points")) || 0;
+```javascript
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-document.getElementById("points").innerText = points;
+import {
+  doc,
+  setDoc,
+  getDoc,
+  addDoc,
+  collection
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-function claimTask(taskId, reward) {
+const auth = window.firebaseAuth;
+const db = window.firebaseDb;
 
-    const lastClick = localStorage.getItem(taskId);
+let points = 0;
+let currentUser = null;
 
-    if (lastClick) {
+async function loadPoints(uid) {
+  const userRef = doc(db, "users", uid);
+  const snap = await getDoc(userRef);
 
-        const diff = Date.now() - Number(lastClick);
+  if (snap.exists()) {
+    points = snap.data().points || 0;
+  } else {
+    points = 0;
+    await setDoc(userRef, {
+      points: 0,
+      createdAt: Date.now()
+    });
+  }
 
-        const hours = diff / (1000 * 60 * 60);
-
-        if (hours < 12) {
-            alert("You can claim this task again after 12 hours.");
-            return;
-        }
-    }
-
-    points += reward;
-
-    localStorage.setItem("points", points);
-    localStorage.setItem(taskId, Date.now());
-
-    document.getElementById("points").innerText = points;
-
-    alert("Congratulations! +" + reward + " points added.");
+  document.getElementById("points").innerText = points;
 }
 
-function withdrawRequest() {
+window.registerUser = async function () {
+  const email = document.getElementById("regEmail").value;
+  const password = document.getElementById("regPassword").value;
 
-    const account = document.getElementById("account").value;
-    const method = document.getElementById("method").value;
+  try {
+    await createUserWithEmailAndPassword(auth, email, password);
+    alert("Registration Successful");
+  } catch (e) {
+    alert(e.message);
+  }
+};
 
-    if (points < 100) {
-        alert("Minimum 100 points required.");
-        return;
-    }
+window.loginUser = async function () {
+  const email = document.getElementById("loginEmail").value;
+  const password = document.getElementById("loginPassword").value;
 
-    if (account === "") {
-        alert("Enter account number.");
-        return;
-    }
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    alert("Login Successful");
+  } catch (e) {
+    alert(e.message);
+  }
+};
 
-    alert(
-        "Withdrawal Request Submitted\n\n" +
-        "Method: " + method +
-        "\nAccount: " + account +
-        "\nPoints: " + points
-    );
-}
+window.logoutUser = async function () {
+  await signOut(auth);
+};
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    currentUser = user;
+
+    document.getElementById("userInfo").innerText =
+      "Logged in: " + user.email;
+
+    await loadPoints(user.uid);
+
+  } else {
+    currentUser = null;
+
+    document.getElementById("userInfo").innerText =
+      "Not Logged In";
+
+    document.getElementById("points").innerText = 0;
+  }
+});
+
+window.claimTask = async function (taskId, reward) {
+
+  if (!currentUser) {
+    alert("Please Login First");
+    return;
+  }
+
+  points += reward;
+
+  document.getElementById("points").innerText = points;
+
+  await setDoc(
+    doc(db, "users", currentUser.uid),
+    { points: points },
+    { merge: true }
+  );
+
+  alert("+" + reward + " Points Added");
+};
+
+window.withdrawRequest = async function () {
+
+  if (!currentUser) {
+    alert("Please Login First");
+    return;
+  }
+
+  if (points < 100) {
+    alert("Minimum 100 Points Required");
+    return;
+  }
+
+  const method =
+    document.getElementById("method").value;
+
+  const account =
+    document.getElementById("account").value;
+
+  await addDoc(collection(db, "withdrawals"), {
+    uid: currentUser.uid,
+    email: currentUser.email,
+    method: method,
+    account: account,
+    points: points,
+    createdAt: Date.now()
+  });
+
+  alert("Withdrawal Request Submitted");
+};
+```
