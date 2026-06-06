@@ -3,8 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Daily Cash Earn</title> 
-  <div class="card">
+<title>Daily Cash Earn</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="card">
 <h2>Register</h2>
 
 <input type="email" id="regEmail" placeholder="Email">
@@ -22,21 +30,17 @@
 <button onclick="logoutUser()">Logout</button>
 
 <p id="userInfo">Not Logged In</p>
-  </div>
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
+</div>
 
 <div class="banner">
 TOP ADSTERRA BANNER
 </div>
 
-<div class="container">
-
 <h1>Daily Cash Earn</h1>
 
 <div class="card">
 <h2>Dashboard</h2>
+
 <p>Your Points: <span id="points">0</span></p>
 <p>100 Points = Rs.50</p>
 </div>
@@ -52,7 +56,6 @@ TOP ADSTERRA BANNER
 <button onclick="claimTask('ad6',6)">Click Ads 6 (+6)</button>
 <button onclick="claimTask('ad7',7)">Click Ads 7 (+7)</button>
 <button onclick="claimTask('ad8',8)">Click Ads 8 (+8)</button>
-
 </div>
 
 <div class="card">
@@ -60,7 +63,6 @@ TOP ADSTERRA BANNER
 
 <button onclick="claimTask('short1',10)">Shortlink 1 (+10)</button>
 <button onclick="claimTask('short2',10)">Shortlink 2 (+10)</button>
-
 </div>
 
 <div class="card">
@@ -79,34 +81,34 @@ TOP ADSTERRA BANNER
 <button onclick="withdrawRequest()">
 Request Withdrawal
 </button>
-
-</div>
-
 </div>
 
 <div class="banner">
 BOTTOM ADSTERRA BANNER
 </div>
+
+</div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
- apiKey: "AIzaSyBecyE3sB9EuIrrQh0WfJB1XZ1kEWJ8yv8",
- authDomain: "daily-cash-earn-95ef2.firebaseapp.com",
- projectId: "daily-cash-earn-95ef2",
- storageBucket: "daily-cash-earn-95ef2.firebasestorage.app",
- messagingSenderId: "813865447234",
- appId: "1:813865447234:web:634c6ce879a7decc8762db"
+apiKey: "AIzaSyBecyE3sB9EuIrrQh0WfJB1XZ1kEWJ8yv8",
+authDomain: "daily-cash-earn-95ef2.firebaseapp.com",
+projectId: "daily-cash-earn-95ef2",
+storageBucket: "daily-cash-earn-95ef2.firebasestorage.app",
+messagingSenderId: "813865447234",
+appId: "1:813865447234:web:634c6ce879a7decc8762db"
 };
 
 const app = initializeApp(firebaseConfig);
 
-window.firebaseApp = app;
 window.firebaseAuth = getAuth(app);
 window.firebaseDb = getFirestore(app);
 </script>
+
 <script type="module" src="script.js"></script>
 
 </body>
