@@ -1,3 +1,4 @@
+alert("script.js loaded");
 ``javascript
 import {
   createUserWithEmailAndPassword,
