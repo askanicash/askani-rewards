@@ -3,7 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Daily Cash Earn</title>
+<title>Daily Cash Earn</title> 
+  <div class="card">
+<h2>Register</h2>
+
+<input type="email" id="regEmail" placeholder="Email">
+<input type="password" id="regPassword" placeholder="Password">
+
+<button onclick="registerUser()">Register</button>
+
+<h2>Login</h2>
+
+<input type="email" id="loginEmail" placeholder="Email">
+<input type="password" id="loginPassword" placeholder="Password">
+
+<button onclick="loginUser()">Login</button>
+
+<button onclick="logoutUser()">Logout</button>
+
+<p id="userInfo">Not Logged In</p>
+  </div>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -68,7 +87,26 @@ Request Withdrawal
 <div class="banner">
 BOTTOM ADSTERRA BANNER
 </div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+const firebaseConfig = {
+ apiKey: "AIzaSyBecyE3sB9EuIrrQh0WfJB1XZ1kEWJ8yv8",
+ authDomain: "daily-cash-earn-95ef2.firebaseapp.com",
+ projectId: "daily-cash-earn-95ef2",
+ storageBucket: "daily-cash-earn-95ef2.firebasestorage.app",
+ messagingSenderId: "813865447234",
+ appId: "1:813865447234:web:634c6ce879a7decc8762db"
+};
+
+const app = initializeApp(firebaseConfig);
+
+window.firebaseApp = app;
+window.firebaseAuth = getAuth(app);
+window.firebaseDb = getFirestore(app);
+</script>
 <script src="script.js"></script>
 
 </body>
