@@ -1,61 +1,76 @@
-```javascript
-let points = Number(localStorage.getItem("points")) || 0;
 
-document.getElementById("points").innerText = points;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Cash Earn</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-function claimTask(taskId, reward) {
+<div class="banner">
+TOP ADSTERRA BANNER
+</div>
 
-    const lastClick = localStorage.getItem(taskId);
+<div class="container">
 
-    if (lastClick) {
-        const diff = Date.now() - Number(lastClick);
-        const hours = diff / (1000 * 60 * 60);
+<h1>Daily Cash Earn</h1>
 
-        if (hours < 12) {
-            alert("You can claim this task again after 12 hours.");
-            return;
-        }
-    }
+<div class="card">
+<h2>Dashboard</h2>
+<p>Your Points: <span id="points">0</span></p>
+<p>100 Points = Rs.50</p>
+</div>
 
-    points += reward;
+<div class="card">
+<h2>Click Ads Tasks</h2>
 
-    localStorage.setItem("points", points);
-    localStorage.setItem(taskId, Date.now());
+<button onclick="claimTask('ad1',1)">Click Ads 1 (+1)</button>
+<button onclick="claimTask('ad2',2)">Click Ads 2 (+2)</button>
+<button onclick="claimTask('ad3',3)">Click Ads 3 (+3)</button>
+<button onclick="claimTask('ad4',4)">Click Ads 4 (+4)</button>
+<button onclick="claimTask('ad5',5)">Click Ads 5 (+5)</button>
+<button onclick="claimTask('ad6',6)">Click Ads 6 (+6)</button>
+<button onclick="claimTask('ad7',7)">Click Ads 7 (+7)</button>
+<button onclick="claimTask('ad8',8)">Click Ads 8 (+8)</button>
 
-    document.getElementById("points").innerText = points;
+</div>
 
-    alert("Congratulations! +" + reward + " points added.");
-}
+<div class="card">
+<h2>Shortlink Tasks</h2>
 
-function withdrawRequest() {
+<button onclick="claimTask('short1',10)">Shortlink 1 (+10)</button>
+<button onclick="claimTask('short2',10)">Shortlink 2 (+10)</button>
 
-    const method = document.getElementById("method").value;
-    const account = document.getElementById("account").value;
+</div>
 
-    if (points < 100) {
-        alert("Minimum 100 Points Required");
-        return;
-    }
+<div class="card">
+<h2>Withdrawal</h2>
 
-    if (!account) {
-        alert("Enter Account Number");
-        return;
-    }
+<select id="method">
+<option>JazzCash</option>
+<option>Easypaisa</option>
+<option>SadaPay</option>
+<option>FaucetPay</option>
+<option>Bank Transfer</option>
+</select>
 
-    const message =
-`Withdrawal Request
+<input type="text" id="account" placeholder="Account Number">
 
-Method: ${method}
-Account: ${account}
-Points: ${points}`;
+<button onclick="withdrawRequest()">
+Request Withdrawal
+</button>
 
-    const whatsappUrl =
-    "https://wa.me/923232605904?text=" +
-    encodeURIComponent(message);
+</div>
 
-    window.open(whatsappUrl, "_blank");
-}
-```
+</div>
 
-```
-```
+<div class="banner">
+BOTTOM ADSTERRA BANNER
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
