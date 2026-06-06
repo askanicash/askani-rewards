@@ -1,57 +1,52 @@
-body{
-background:#0f172a;
-color:white;
-font-family:Arial,sans-serif;
-margin:0;
-padding:15px;
+let points = Number(localStorage.getItem("points")) || 0;
+
+document.getElementById("points").innerText = points;
+
+function claimTask(taskId, reward) {
+
+    const lastClick = localStorage.getItem(taskId);
+
+    if (lastClick) {
+
+        const diff = Date.now() - Number(lastClick);
+
+        const hours = diff / (1000 * 60 * 60);
+
+        if (hours < 12) {
+            alert("You can claim this task again after 12 hours.");
+            return;
+        }
+    }
+
+    points += reward;
+
+    localStorage.setItem("points", points);
+    localStorage.setItem(taskId, Date.now());
+
+    document.getElementById("points").innerText = points;
+
+    alert("Congratulations! +" + reward + " points added.");
 }
 
-.container{
-max-width:900px;
-margin:auto;
-}
+function withdrawRequest() {
 
-h1{
-text-align:center;
-}
+    const account = document.getElementById("account").value;
+    const method = document.getElementById("method").value;
 
-.card{
-background:#1e293b;
-padding:15px;
-margin:15px 0;
-border-radius:12px;
-box-shadow:0 0 10px rgba(0,0,0,0.3);
-}
+    if (points < 100) {
+        alert("Minimum 100 points required.");
+        return;
+    }
 
-button{
-width:100%;
-padding:12px;
-margin:6px 0;
-border:none;
-border-radius:8px;
-background:#22c55e;
-color:white;
-font-size:16px;
-cursor:pointer;
-}
+    if (account === "") {
+        alert("Enter account number.");
+        return;
+    }
 
-button:hover{
-opacity:0.9;
-}
-
-input,select{
-width:100%;
-padding:12px;
-margin:6px 0;
-border-radius:8px;
-border:none;
-}
-
-.banner{
-background:#111827;
-border:2px dashed #475569;
-padding:20px;
-margin:10px 0;
-text-align:center;
-border-radius:10px;
+    alert(
+        "Withdrawal Request Submitted\n\n" +
+        "Method: " + method +
+        "\nAccount: " + account +
+        "\nPoints: " + points
+    );
 }
