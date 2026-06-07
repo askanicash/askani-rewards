@@ -1,24 +1,27 @@
-```javascript
+// =======================
+// DAILY CASH EARN SCRIPT
+// =======================
+
 // Load saved points
 let points = Number(localStorage.getItem("points")) || 0;
 
-// Page load
+// Page Load
 window.onload = function () {
     updatePoints();
     loadHistory();
 };
 
-// Update points display
+// Update Points
 function updatePoints() {
-    const el = document.getElementById("points");
+    const pointsEl = document.getElementById("points");
 
-    if (el) {
-        el.innerText = points;
+    if (pointsEl) {
+        pointsEl.innerText = points;
     }
 }
 
-// Claim Task Function
-function claimTask(taskId, reward) {
+// Open Task + Reward + 5 Hour Cooldown
+function openTask(taskId, reward, link) {
 
     let lastClaim = localStorage.getItem(taskId);
 
@@ -32,7 +35,7 @@ function claimTask(taskId, reward) {
             let remaining = (5 - hours).toFixed(1);
 
             alert(
-                "Task already claimed!\n\n" +
+                "Task already claimed.\n\n" +
                 "Wait " + remaining + " hours."
             );
 
@@ -40,6 +43,10 @@ function claimTask(taskId, reward) {
         }
     }
 
+    // Open Link
+    window.open(link, "_blank");
+
+    // Add Points
     points += reward;
 
     localStorage.setItem("points", points);
@@ -50,7 +57,7 @@ function claimTask(taskId, reward) {
     alert("+" + reward + " Points Added");
 }
 
-// Withdrawal Function
+// Withdrawal Request
 function withdrawRequest() {
 
     let method = document.getElementById("method").value;
@@ -66,19 +73,20 @@ function withdrawRequest() {
         return;
     }
 
-    // Deduct points
     points -= 100;
 
     localStorage.setItem("points", points);
 
-    // Save history
+    // Save History
     let history =
         JSON.parse(localStorage.getItem("history")) || [];
 
     history.push(
-        "Withdraw Rs.50 via " +
+        "Rs.50 Withdraw | " +
         method +
-        " - " +
+        " | " +
+        account +
+        " | " +
         new Date().toLocaleString()
     );
 
@@ -90,7 +98,7 @@ function withdrawRequest() {
     updatePoints();
     loadHistory();
 
-    // Your WhatsApp Number
+    // WhatsApp Number
     let adminNumber = "923001234567";
 
     let message =
@@ -109,7 +117,7 @@ function withdrawRequest() {
     window.open(url, "_blank");
 }
 
-// Load History
+// Load Withdrawal History
 function loadHistory() {
 
     let history =
@@ -141,6 +149,5 @@ function resetPoints() {
     updatePoints();
     loadHistory();
 
-    alert("Data Reset Complete");
+    alert("All Data Reset");
 }
-```
