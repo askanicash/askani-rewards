@@ -1,253 +1,172 @@
+
+unko **poori tarah delete** kar do.
+
+Ya sabse aasaan tareeqa:
+
+**Poora `script.js` delete karo aur is clean version ko paste karo:**
+
+```javascript
 let points = Number(localStorage.getItem("points")) || 0;
 
 window.onload = function () {
-updatePoints();
-loadHistory();
+    updatePoints();
+    loadHistory();
 };
 
 function updatePoints() {
+    const el = document.getElementById("points");
 
-```
-const el = document.getElementById("points");
+    if (el) {
+        el.innerText = points;
+    }
 
-if (el) {
-    el.innerText = points;
-}
+    let progress = Math.min((points / 100) * 100, 100);
 
-let progress =
-    Math.min((points / 100) * 100, 100);
+    let bar = document.getElementById("progress-bar");
+    let text = document.getElementById("progress-text");
 
-let bar =
-    document.getElementById("progress-bar");
+    if (bar) {
+        bar.style.width = progress + "%";
+    }
 
-let text =
-    document.getElementById("progress-text");
-
-if (bar) {
-    bar.style.width = progress + "%";
-}
-
-if (text) {
-    text.innerText =
-        points + " / 100 Points";
-}
-```
-
+    if (text) {
+        text.innerText = points + " / 100 Points";
+    }
 }
 
 function claimTask(taskId, reward) {
+    let lastClaim = localStorage.getItem(taskId);
 
-```
-let lastClaim = localStorage.getItem(taskId);
+    if (lastClaim) {
+        let diff = Date.now() - Number(lastClaim);
+        let hours = diff / (1000 * 60 * 60);
 
-if (lastClaim) {
+        if (hours < 5) {
+            let remaining = (5 - hours).toFixed(1);
 
-    let diff = Date.now() - Number(lastClaim);
-
-    let hours = diff / (1000 * 60 * 60);
-
-    if (hours < 5) {
-
-        let remaining =
-            (5 - hours).toFixed(1);
-
-        alert(
-            "Task already claimed!\n\nWait " +
-            remaining +
-            " hours."
-        );
-
-        return;
+            alert(
+                "Task already claimed!\n\nWait " +
+                remaining +
+                " hours."
+            );
+            return;
+        }
     }
-}
 
-points += reward;
+    points += reward;
 
-localStorage.setItem(
-    "points",
-    points
-);
+    localStorage.setItem("points", points);
+    localStorage.setItem(taskId, Date.now());
 
-localStorage.setItem(
-    taskId,
-    Date.now()
-);
+    updatePoints();
 
-updatePoints();
-
-alert("+" + reward + " Points Added");
-```
-
+    alert("+" + reward + " Points Added");
 }
 
 function claimDailyBonus() {
+    let lastBonus = localStorage.getItem("dailyBonus");
 
-```
-let lastBonus =
-    localStorage.getItem("dailyBonus");
+    if (lastBonus) {
+        let diff = Date.now() - Number(lastBonus);
+        let hours = diff / (1000 * 60 * 60);
 
-if (lastBonus) {
+        if (hours < 24) {
+            let remain = (24 - hours).toFixed(1);
 
-    let diff =
-        Date.now() - Number(lastBonus);
-
-    let hours =
-        diff / (1000 * 60 * 60);
-
-    if (hours < 24) {
-
-        let remain =
-            (24 - hours).toFixed(1);
-
-        alert(
-            "Come back after " +
-            remain +
-            " hours."
-        );
-
-        return;
+            alert(
+                "Come back after " +
+                remain +
+                " hours."
+            );
+            return;
+        }
     }
-}
 
-points += 10;
+    points += 10;
 
-localStorage.setItem(
-    "points",
-    points
-);
+    localStorage.setItem("points", points);
+    localStorage.setItem("dailyBonus", Date.now());
 
-localStorage.setItem(
-    "dailyBonus",
-    Date.now()
-);
+    updatePoints();
 
-updatePoints();
-
-alert("+10 Daily Bonus Added");
-```
-
+    alert("+10 Daily Bonus Added");
 }
 
 function withdrawRequest() {
+    let method = document.getElementById("method").value;
+    let account = document.getElementById("account").value.trim();
 
-```
-let method =
-    document.getElementById("method").value;
+    if (account === "") {
+        alert("Please enter account details");
+        return;
+    }
 
-let account =
-    document.getElementById("account")
-    .value
-    .trim();
+    if (points < 100) {
+        alert("Minimum 100 Points Required");
+        return;
+    }
 
-if (account === "") {
-    alert(
-        "Please enter account details"
+    points -= 100;
+
+    localStorage.setItem("points", points);
+
+    let history =
+        JSON.parse(localStorage.getItem("history")) || [];
+
+    history.unshift(
+        method + " - " + account + " - Rs.50"
     );
-    return;
-}
 
-if (points < 100) {
-    alert(
-        "Minimum 100 Points Required"
+    localStorage.setItem(
+        "history",
+        JSON.stringify(history)
     );
-    return;
-}
 
-points -= 100;
+    updatePoints();
+    loadHistory();
 
-localStorage.setItem(
-    "points",
-    points
-);
+    let adminNumber = "923001234567";
 
-let history =
-    JSON.parse(
-        localStorage.getItem("history")
-    ) || [];
+    let message =
+        "Withdrawal Request\n\n" +
+        "Method: " + method + "\n" +
+        "Account: " + account + "\n" +
+        "Amount: Rs.50\n" +
+        "Remaining Points: " + points;
 
-history.unshift(
-    method +
-    " - " +
-    account +
-    " - Rs.50"
-);
+    let url =
+        "https://wa.me/" +
+        adminNumber +
+        "?text=" +
+        encodeURIComponent(message);
 
-localStorage.setItem(
-    "history",
-    JSON.stringify(history)
-);
-
-updatePoints();
-
-loadHistory();
-
-let adminNumber =
-    "923001234567";
-
-let message =
-    "Withdrawal Request\n\n" +
-    "Method: " + method + "\n" +
-    "Account: " + account + "\n" +
-    "Amount: Rs.50\n" +
-    "Remaining Points: " +
-    points;
-
-let url =
-    "https://wa.me/" +
-    adminNumber +
-    "?text=" +
-    encodeURIComponent(message);
-
-window.open(
-    url,
-    "_blank"
-);
-```
-
+    window.open(url, "_blank");
 }
 
 function loadHistory() {
+    let history =
+        JSON.parse(localStorage.getItem("history")) || [];
 
-```
-let history =
-    JSON.parse(
-        localStorage.getItem("history")
-    ) || [];
+    let list = document.getElementById("history");
 
-let list =
-    document.getElementById("history");
+    if (!list) return;
 
-if (!list) return;
+    list.innerHTML = "";
 
-list.innerHTML = "";
-
-history.forEach(item => {
-
-    let li =
-        document.createElement("li");
-
-    li.innerText = item;
-
-    list.appendChild(li);
-});
-```
-
+    history.forEach(item => {
+        let li = document.createElement("li");
+        li.innerText = item;
+        list.appendChild(li);
+    });
 }
 
 function resetPoints() {
+    localStorage.clear();
 
-```
-localStorage.clear();
+    points = 0;
 
-points = 0;
+    updatePoints();
+    loadHistory();
 
-updatePoints();
-
-loadHistory();
-
-alert(
-    "Data Reset Complete"
-);
-```
-
+    alert("Data Reset Complete");
 }
