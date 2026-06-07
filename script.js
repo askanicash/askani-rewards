@@ -1,34 +1,37 @@
-function claimTask(taskId, reward){
+function withdrawRequest(){
 
-let lastClaim = localStorage.getItem(taskId);
+    let method = document.getElementById("method").value;
+    let account = document.getElementById("account").value;
 
-if(lastClaim){
+    if(account.trim() === ""){
+        alert("Enter account details");
+        return;
+    }
 
-let diff = Date.now() - Number(lastClaim);
+    if(points < 100){
+        alert("Minimum 100 points required");
+        return;
+    }
 
-let hours = diff / (1000 * 60 * 60);
+    points -= 100;
 
-if(hours < 5){
+    localStorage.setItem("points", points);
 
-let remaining = (5 - hours).toFixed(1);
+    document.getElementById("points").innerText = points;
 
-alert(
-"Task already claimed.\n\nWait " +
-remaining +
-" hours."
-);
+    let adminNumber = "923001234567"; // apna WhatsApp number
 
-return;
-}
-}
+    let message =
+        "Withdrawal Request%0A%0A" +
+        "Method: " + method + "%0A" +
+        "Account: " + account + "%0A" +
+        "Amount: Rs.50";
 
-points += reward;
-
-localStorage.setItem("points", points);
-
-localStorage.setItem(taskId, Date.now());
-
-document.getElementById("points").innerText = points;
-
-alert("+" + reward + " Points Added");
+    window.open(
+        "https://wa.me/" +
+        adminNumber +
+        "?text=" +
+        message,
+        "_blank"
+    );
 }
