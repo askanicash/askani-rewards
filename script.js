@@ -32,7 +32,7 @@ let msg =
 "Points: " + points;
 
 window.open(
-"https://wa.me/YOURNUMBER?text=" + msg,
+"https://wa.me/+93232605904?text=" + msg,
 "_blank"
 );
 }
