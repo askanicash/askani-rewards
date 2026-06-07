@@ -1,61 +1,85 @@
-<div class="top-banner">
-    Banner Ad Here
-</div>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  .top-banner{
-    background:#fff;
-    text-align:center;
-    padding:15px;
-    margin-bottom:15px;
-    border-radius:10px;
-}
-
-.bottom-banner{
-    position:fixed;
-    bottom:0;
-    left:0;
-    width:100%;
-    background:#fff;
-    text-align:center;
-    padding:15px;
-    border-top:1px solid #ccc;
-}
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Daily Cash Earn</title>
 
-<style>
-
-.top-banner{
-    background:#fff;
-    text-align:center;
-    padding:15px;
-    margin-bottom:15px;
-    border-radius:10px;
-}
-
-.bottom-banner{
-    position:fixed;
-    bottom:0;
-    left:0;
-    width:100%;
-    background:#fff;
-    text-align:center;
-    padding:15px;
-    border-top:1px solid #ccc;
-}
-
-</style>
+<link rel="stylesheet" href="style.css">
 
 </head>
-<select id="method">
-    <option>JazzCash</option>
-    <option>Easypaisa</option>
-    <option>SadaPay</option>
-    <option>FaucetPay</option>
-    <option>Binance USDT</option>
-</select>
-<div class="bottom-banner">
-    Banner Ad Here
+<body>
+
+<div class="top-banner">
+    TOP BANNER AD
 </div>
+
+<div class="container">
+
+    <h1>Daily Cash Earn</h1>
+
+    <div class="card">
+        <h2>Dashboard</h2>
+        <p>Points: <span id="points">0</span></p>
+        <p>100 Points = Rs.50</p>
+    </div>
+
+    <div class="card">
+        <h2>PTC Ads</h2>
+
+        <button onclick="claimTask('ad1',1)">PTC Ad 1 (+1)</button>
+        <button onclick="claimTask('ad2',1)">PTC Ad 2 (+1)</button>
+        <button onclick="claimTask('ad3',1)">PTC Ad 3 (+1)</button>
+        <button onclick="claimTask('ad4',1)">PTC Ad 4 (+1)</button>
+        <button onclick="claimTask('ad5',1)">PTC Ad 5 (+1)</button>
+        <button onclick="claimTask('ad6',1)">PTC Ad 6 (+1)</button>
+
+        <p class="note">
+            Each ad can be claimed once every 5 hours.
+        </p>
+    </div>
+
+    <div class="card">
+        <h2>Shortlinks</h2>
+
+        <button onclick="claimTask('short1',10)">
+            Shortlink 1 (+10)
+        </button>
+
+        <button onclick="claimTask('short2',10)">
+            Shortlink 2 (+10)
+        </button>
+    </div>
+
+    <div class="card">
+        <h2>Withdrawal</h2>
+
+        <select id="method">
+            <option>JazzCash</option>
+            <option>Easypaisa</option>
+            <option>SadaPay</option>
+            <option>FaucetPay</option>
+            <option>Binance USDT</option>
+        </select>
+
+        <input
+            type="text"
+            id="account"
+            placeholder="Enter Account Number / Wallet"
+        >
+
+        <button onclick="withdrawRequest()">
+            Withdraw 100 Points
+        </button>
+    </div>
+
+</div>
+
+<div class="bottom-banner">
+    BOTTOM BANNER AD
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
