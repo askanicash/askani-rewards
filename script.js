@@ -31,8 +31,6 @@ let msg =
 "Account: " + account + "%0A" +
 "Points: " + points;
 
-window.open(
-"https://wa.me/923232605904?text=" + msg,
-"_blank"
-);
+window.location.href =
+"https://api.whatsapp.com/send?phone=923232605904&text=" + encodeURIComponent(msg);
 }
