@@ -1,13 +1,17 @@
+```javascript
 // Load saved points
 let points = Number(localStorage.getItem("points")) || 0;
 
-// Update points on page load
+// Page load
 window.onload = function () {
     updatePoints();
+    loadHistory();
 };
 
+// Update points display
 function updatePoints() {
     const el = document.getElementById("points");
+
     if (el) {
         el.innerText = points;
     }
@@ -67,9 +71,26 @@ function withdrawRequest() {
 
     localStorage.setItem("points", points);
 
-    updatePoints();
+    // Save history
+    let history =
+        JSON.parse(localStorage.getItem("history")) || [];
 
-    // CHANGE THIS NUMBER TO YOUR OWN
+    history.push(
+        "Withdraw Rs.50 via " +
+        method +
+        " - " +
+        new Date().toLocaleString()
+    );
+
+    localStorage.setItem(
+        "history",
+        JSON.stringify(history)
+    );
+
+    updatePoints();
+    loadHistory();
+
+    // Your WhatsApp Number
     let adminNumber = "923001234567";
 
     let message =
@@ -88,30 +109,9 @@ function withdrawRequest() {
     window.open(url, "_blank");
 }
 
-// Reset (optional)
-function resetPoints() {
-    localStorage.clear();
-    points = 0;
-    updatePoints();
-    alert("Data Reset Complete");
-}
-    let message =
-        "Withdrawal Request\n\n" +
-        "Method: " + method + "\n" +
-        "Account: " + account + "\n" +
-        "Amount: Rs.50\n" +
-        "Remaining Points: " + points;
-
-    let url =
-        "https://wa.me/" +
-        adminNumber +
-        "?text=" +
-        encodeURIComponent(message);
-
-    window.open(url, "_blank");
-}
-
+// Load History
 function loadHistory() {
+
     let history =
         JSON.parse(localStorage.getItem("history")) || [];
 
@@ -122,13 +122,18 @@ function loadHistory() {
     list.innerHTML = "";
 
     history.forEach(item => {
+
         let li = document.createElement("li");
+
         li.innerText = item;
+
         list.appendChild(li);
     });
 }
 
+// Reset Data
 function resetPoints() {
+
     localStorage.clear();
 
     points = 0;
@@ -138,3 +143,4 @@ function resetPoints() {
 
     alert("Data Reset Complete");
 }
+```
