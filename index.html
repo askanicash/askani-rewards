@@ -1,48 +1,34 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Daily Cash Earn</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="banner">
-TOP ADSTERRA BANNER
-</div>
-
 <div class="container">
-
 <h1>Daily Cash Earn</h1>
 
 <div class="card">
 <h2>Dashboard</h2>
-<p>Your Points: <span id="points">0</span></p>
+<p>Points: <span id="points">0</span></p>
 <p>100 Points = Rs.50</p>
 </div>
 
 <div class="card">
-<h2>Click Ads Tasks</h2>
-
-<button onclick="claimTask('ad1',1)">Click Ads 1 (+1)</button>
-<button onclick="claimTask('ad2',2)">Click Ads 2 (+2)</button>
-<button onclick="claimTask('ad3',3)">Click Ads 3 (+3)</button>
-<button onclick="claimTask('ad4',4)">Click Ads 4 (+4)</button>
-<button onclick="claimTask('ad5',5)">Click Ads 5 (+5)</button>
-<button onclick="claimTask('ad6',6)">Click Ads 6 (+6)</button>
-<button onclick="claimTask('ad7',7)">Click Ads 7 (+7)</button>
-<button onclick="claimTask('ad8',8)">Click Ads 8 (+8)</button>
-
+<h2>Ads Tasks</h2>
+<button onclick="claimTask(1)">Ad 1 (+1)</button>
+<button onclick="claimTask(2)">Ad 2 (+2)</button>
+<button onclick="claimTask(3)">Ad 3 (+3)</button>
+<button onclick="claimTask(4)">Ad 4 (+4)</button>
 </div>
 
 <div class="card">
-<h2>Shortlink Tasks</h2>
-
-<button onclick="claimTask('short1',10)">Shortlink 1 (+10)</button>
-<button onclick="claimTask('short2',10)">Shortlink 2 (+10)</button>
-
+<h2>Shortlinks</h2>
+<button onclick="claimTask(10)">Shortlink 1 (+10)</button>
+<button onclick="claimTask(10)">Shortlink 2 (+10)</button>
 </div>
 
 <div class="card">
@@ -52,25 +38,16 @@ TOP ADSTERRA BANNER
 <option>JazzCash</option>
 <option>Easypaisa</option>
 <option>SadaPay</option>
-<option>FaucetPay</option>
-<option>Bank Transfer</option>
 </select>
 
 <input type="text" id="account" placeholder="Account Number">
 
-<button onclick="withdrawRequest()">
-Request Withdrawal
-</button>
+<button onclick="withdrawRequest()">Request Withdrawal</button>
 
 </div>
 
-</div>
-
-<div class="banner">
-BOTTOM ADSTERRA BANNER
 </div>
 
 <script src="script.js"></script>
-
 </body>
 </html>
