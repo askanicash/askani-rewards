@@ -99,7 +99,7 @@ function withdrawRequest() {
     loadHistory();
 
     // WhatsApp Number
-    let adminNumber = "923001234567";
+    let adminNumber = "923232605904";
 
     let message =
         "Withdrawal Request\n\n" +
