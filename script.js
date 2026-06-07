@@ -1,36 +1,34 @@
-let points = Number(localStorage.getItem("points")) || 0;
+function claimTask(taskId, reward){
 
-document.getElementById("points").innerText = points;
+let lastClaim = localStorage.getItem(taskId);
 
-function claimTask(reward){
+if(lastClaim){
+
+let diff = Date.now() - Number(lastClaim);
+
+let hours = diff / (1000 * 60 * 60);
+
+if(hours < 5){
+
+let remaining = (5 - hours).toFixed(1);
+
+alert(
+"Task already claimed.\n\nWait " +
+remaining +
+" hours."
+);
+
+return;
+}
+}
+
 points += reward;
 
 localStorage.setItem("points", points);
 
+localStorage.setItem(taskId, Date.now());
+
 document.getElementById("points").innerText = points;
 
 alert("+" + reward + " Points Added");
-}
-
-function withdrawRequest(){
-
-if(points < 100){
-alert("Minimum 100 Points Required");
-return;
-}
-
-let method =
-document.getElementById("method").value;
-
-let account =
-document.getElementById("account").value;
-
-let msg =
-"Withdrawal Request%0A" +
-"Method: " + method + "%0A" +
-"Account: " + account + "%0A" +
-"Points: " + points;
-
-window.location.href =
-"https://api.whatsapp.com/send?phone=923232605904&text=" + encodeURIComponent(msg);
 }
