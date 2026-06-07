@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,8 +7,8 @@
 <title>Daily Cash Earn</title>
 
 <link rel="stylesheet" href="style.css">
-
 </head>
+
 <body>
 
 <div class="top-banner">
@@ -27,12 +28,18 @@
     <div class="card">
         <h2>PTC Ads</h2>
 
-        <button onclick="claimTask('ad1',1)">PTC Ad 1 (+1)</button>
-        <button onclick="claimTask('ad2',1)">PTC Ad 2 (+1)</button>
-        <button onclick="claimTask('ad3',1)">PTC Ad 3 (+1)</button>
-        <button onclick="claimTask('ad4',1)">PTC Ad 4 (+1)</button>
-        <button onclick="claimTask('ad5',1)">PTC Ad 5 (+1)</button>
-        <button onclick="claimTask('ad6',1)">PTC Ad 6 (+1)</button>
+        <button onclick="openTask('ad1',1,'https://YOUR-LINK-1.com')">PTC Ad 1 (+1)</button>
+
+        <button onclick="openTask('ad2',1,'https://YOUR-LINK-2.com')">PTC Ad 2 (+1)</button>
+
+        <button onclick="openTask('ad3',1,'https://YOUR-LINK-3.com')">PTC Ad 3 (+1)</button>
+
+        <button onclick="openTask('ad4',1,'https://YOUR-LINK-4.com')">PTC Ad 4 (+1)</button>
+
+        <button onclick="openTask('ad5',1,'https://YOUR-LINK-5.com')">PTC Ad 5 (+1)</button>
+
+        <button onclick="openTask('ad6',1,'https://YOUR-LINK-6.com')">PTC Ad 6 (+1)</button>
+
         <p class="note">
             Each ad can be claimed once every 5 hours.
         </p>
@@ -41,11 +48,11 @@
     <div class="card">
         <h2>Shortlinks</h2>
 
-        <button onclick="claimTask('short1',10)">
+        <button onclick="openTask('short1',10,'https://YOUR-SHORTLINK-1.com')">
             Shortlink 1 (+10)
         </button>
 
-        <button onclick="claimTask('short2',10)">
+        <button onclick="openTask('short2',10,'https://YOUR-SHORTLINK-2.com')">
             Shortlink 2 (+10)
         </button>
     </div>
@@ -69,12 +76,13 @@
 
         <button onclick="withdrawRequest()">
             Withdraw 100 Points
-   <div class="card">
-    <h2>Withdrawal History</h2>
-    <ul id="history"></ul>
-   </div>     </button>
+        </button>
     </div>
-    
+
+    <div class="card">
+        <h2>Withdrawal History</h2>
+        <ul id="history"></ul>
+    </div>
 
 </div>
 
@@ -82,5 +90,8 @@
     BOTTOM BANNER AD
 </div>
 
+<script src="script.js"></script>
+
 </body>
 </html>
+
