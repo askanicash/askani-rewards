@@ -1,109 +1,100 @@
-body{
-    margin:0;
-    padding:0;
-    background:#0f172a;
-    font-family:Arial,sans-serif;
-    color:white;
-}
+// Load saved points
+let points = Number(localStorage.getItem("points")) || 0;
 
-.container{
-    width:90%;
-    max-width:700px;
-    margin:auto;
-    padding-bottom:100px;
-}
-
-h1{
-    text-align:center;
-}
-
-.card{
-    background:#111827;
-    padding:15px;
-    margin-top:15px;
-    border-radius:12px;
-}
-
-button{
-    width:100%;
-    padding:12px;
-    margin-top:10px;
-    border:none;
-    border-radius:8px;
-    background:#16a34a;
-    color:white;
-    font-size:16px;
-}
-
-button:hover{
-    opacity:0.9;
-}
-
-input,
-select{
-    width:100%;
-    padding:12px;
-    margin-top:10px;
-    border-radius:8px;
-    border:none;
-    box-sizing:border-box;
-}
-
-.top-banner{
-    background:#1e293b;
-    text-align:center;
-    padding:15px;
-    font-weight:bold;
-}
-
-.bottom-banner{
-    position:fixed;
-    bottom:0;
-    left:0;
-    width:100%;
-    background:#1e293b;
-    text-align:center;
-    padding:15px;
-    font-weight:bold;
-}
-
-.note{
-    margin-top:10px;
-    font-size:14px;
-    color:#cbd5e1;
-}    });
-}
-
-function resetPoints() {
-    localStorage.clear();
-    points = 0;
+// Update points on page load
+window.onload = function () {
     updatePoints();
-    loadHistory();
-    alert("Data Reset Complete");
-}        return;
+};
+
+function updatePoints() {
+    const el = document.getElementById("points");
+    if (el) {
+        el.innerText = points;
+    }
+}
+
+// Claim Task Function
+function claimTask(taskId, reward) {
+
+    let lastClaim = localStorage.getItem(taskId);
+
+    if (lastClaim) {
+
+        let diff = Date.now() - Number(lastClaim);
+        let hours = diff / (1000 * 60 * 60);
+
+        if (hours < 5) {
+
+            let remaining = (5 - hours).toFixed(1);
+
+            alert(
+                "Task already claimed!\n\n" +
+                "Wait " + remaining + " hours."
+            );
+
+            return;
+        }
     }
 
+    points += reward;
+
+    localStorage.setItem("points", points);
+    localStorage.setItem(taskId, Date.now());
+
+    updatePoints();
+
+    alert("+" + reward + " Points Added");
+}
+
+// Withdrawal Function
+function withdrawRequest() {
+
+    let method = document.getElementById("method").value;
+    let account = document.getElementById("account").value.trim();
+
+    if (account === "") {
+        alert("Please enter account details");
+        return;
+    }
+
+    if (points < 100) {
+        alert("Minimum 100 Points Required");
+        return;
+    }
+
+    // Deduct points
     points -= 100;
 
     localStorage.setItem("points", points);
 
-    let history =
-        JSON.parse(localStorage.getItem("history")) || [];
-
-    history.unshift(
-        method + " - " + account + " - Rs.50"
-    );
-
-    localStorage.setItem(
-        "history",
-        JSON.stringify(history)
-    );
-
     updatePoints();
-    loadHistory();
 
+    // CHANGE THIS NUMBER TO YOUR OWN
     let adminNumber = "923001234567";
 
+    let message =
+        "Withdrawal Request\n\n" +
+        "Method: " + method + "\n" +
+        "Account: " + account + "\n" +
+        "Amount: Rs.50\n" +
+        "Remaining Points: " + points;
+
+    let url =
+        "https://wa.me/" +
+        adminNumber +
+        "?text=" +
+        encodeURIComponent(message);
+
+    window.open(url, "_blank");
+}
+
+// Reset (optional)
+function resetPoints() {
+    localStorage.clear();
+    points = 0;
+    updatePoints();
+    alert("Data Reset Complete");
+}
     let message =
         "Withdrawal Request\n\n" +
         "Method: " + method + "\n" +
