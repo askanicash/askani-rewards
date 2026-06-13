@@ -12,14 +12,61 @@
 <body>
 
 <div class="top-banner">
-    <!-- BEGIN AADS AD UNIT 2442378 -->
+    <!-- Fixed Banner Container -->
+<div id="bannerAdContainer" style="display: none; position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 728px; height: 90px; background: #fff; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); z-index: 99999; border-top: 1px solid #ccc; text-align: center;">
+  <!-- Close Button -->
+  <span onclick="closeBanner()" style="position: absolute; right: 5px; top: -25px; background: #333; color: #fff; padding: 2px 8px; font-size: 14px; font-family: Arial; border-radius: 4px 4px 0 0; cursor: pointer; user-select: none;">× Close</span>
+  <!-- Ad Content inside Iframe -->
+  <iframe id="bannerAdIframe" style="border: none; height: 100%; width: 100%; scrolling: no;"></iframe>
+</div>
 
-<div id="frame" style="width: 300px;margin: auto;z-index: 99998;height: auto">
-          <iframe data-aa='2442378' src='//ad.a-ads.com/2442378/?size=468x60'
-                            style='border:0; padding:0; width:468px; height:60px; overflow:hidden;display: block;margin: auto'></iframe>
-        </div>
+<script>
+  // Encryption functions
+  function xorEncryptDecrypt(input, key) {
+    let result = '';
+    for (let i = 0; i < input.length; i++) {
+      result += String.fromCharCode(input.charCodeAt(i) ^ key.charCodeAt(i % key.length));
+    }
+    return result;
+  }
+  
+  function generateUniqueToken() {
+    return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+  }
 
-<!-- END AADS AD UNIT 2442378 -->
+  // Banner Controls
+  function openBannerWithLink(link) {
+    document.getElementById('bannerAdIframe').src = link;
+    document.getElementById('bannerAdContainer').style.display = 'block';
+  }
+  
+  function closeBanner() {
+    document.getElementById('bannerAdContainer').style.display = 'none';
+    document.getElementById('bannerAdIframe').src = ''; // Clear source
+  }
+
+  var encryptionKey = 'YourEncryptionKey';
+
+  // Function to load ad dynamically
+  function triggerAd() {
+    var uniqueToken = generateUniqueToken();
+    var encryptedToken = xorEncryptDecrypt(uniqueToken, encryptionKey);
+    var link = '//otieu.com/4/7957503?key=' + encodeURIComponent(encryptedToken);
+    
+    openBannerWithLink(link);
+
+    // Automatically hide banner after 20 seconds
+    setTimeout(function () {
+      closeBanner();
+    }, 20000);
+  }
+
+  // Interval-based triggers (5s, 30s, 55s)
+  setTimeout(triggerAd, 5000);
+  setTimeout(triggerAd, 30000);
+  setTimeout(triggerAd, 55000);
+</script>
+
 </div>
 
 <div class="container">
@@ -35,23 +82,23 @@
     <div class="card">
         <h2>PTC Ads</h2>
 
-        <button onclick="openTask('ad1',1,'https://omg10.com/4/8159346',3)">
+        <button onclick="openTask('ad1',1,'https://omg10.com/4/9513350',1)">
 PTC Ad 1 (+1)
 </button>
 
-<button onclick="openTask('ad2',1,'https://omg10.com/4/79495268',5)">
+<button onclick="openTask('ad2',1,'https://omg10.com/4/8487139',5)">
 PTC Ad 2 (+1)
 </button>
 
-<button onclick="openTask('ad3',1,'https://omg10.com/4/8054864',8)">
+<button onclick="openTask('ad3',1,'https://omg10.com/4/7892251',8)">
 PTC Ad 3 (+1)
 </button>
 
-<button onclick="openTask('ad4',1,'https://omg10.com/4/9916518',10)">
+<button onclick="openTask('ad4',1,'https://omg10.com/4/10112945',10)">
 PTC Ad 4 (+1)
 </button>
 
-<button onclick="openTask('ad5',1,'https://omg10.com/4/9869567',15)">
+<button onclick="openTask('ad5',1,'https://omg10.com/4/9844279',15)">
 PTC Ad 5 (+1)
 </button>
 
