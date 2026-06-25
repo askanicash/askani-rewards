@@ -1,7 +1,65 @@
 
 <!DOCTYPE html>
 <html lang="en">
-<head>  <meta name="monetag" content="a3b890ebb53319d38d854cc311389f20">
+<head>  <!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Verify</title>
+
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+<style>
+body{
+font-family:Arial;
+text-align:center;
+margin-top:100px;
+}
+button{
+padding:12px 25px;
+font-size:18px;
+cursor:pointer;
+}
+</style>
+
+</head>
+<body>
+
+<h2>Verify You Are Human</h2>
+
+<div class="cf-turnstile"
+data-sitekey="YOUR_SITE_KEY"
+data-callback="verified">
+</div>
+
+<br>
+
+<button id="btn" disabled>Continue</button>
+
+<script>
+
+let ok=false;
+
+function verified(token){
+ok=true;
+document.getElementById("btn").disabled=false;
+}
+
+document.getElementById("btn").onclick=function(){
+
+if(!ok){
+alert("Complete verification first.");
+return;
+}
+
+window.location.href="https://www.effectivecpmnetwork.com/mui4v4w2x?key=f4b5ca8e43b3f54d848c67c35e899f56";
+
+};
+
+</script>
+
+</body>
+</html> <meta name="monetag" content="a3b890ebb53319d38d854cc311389f20">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Daily Cash Earn</title>
