@@ -21,7 +21,7 @@ export default {
 
     // Apna Monetag Direct Link yahan daalein
     return Response.redirect(
-      "https://YOUR_MONETAG_DIRECT_LINK",
+      "https://www.effectivecpmnetwork.com/f4cccgmr?key=54925ac81f906f93aec474fef159a338",
       302
     );
   }
