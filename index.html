@@ -1,3 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Tools - NoteBook & Link Shortener</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #f4f6f9; color: #333; padding-bottom: 120px; }
+        header { background: #34495e; color: white; padding: 20px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        header h1 { font-size: 24px; }
+        .main-container { max-width: 600px; margin: 30px auto; padding: 0 15px; }
+        .card { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); margin-bottom: 25px; }
+        .card h2 { font-size: 20px; margin-bottom: 15px; color: #2c3e50; border-bottom: 2px solid #ecf0f1; padding-bottom: 8px; }
+        textarea, input[type="text"] { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 6px; margin-bottom: 15px; font-size: 16px; outline: none; }
+        textarea { height: 120px; resize: none; }
+        button { width: 100%; background: #27ae60; color: white; border: none; padding: 14px; font-size: 16px; font-weight: bold; border-radius: 6px; cursor: pointer; transition: background 0.3s; }
+        button:hover { background: #219653; }
+        .result-box { background: #e8f8f5; border: 1px dashed #2cc990; padding: 12px; border-radius: 6px; text-align: center; font-weight: bold; word-break: break-all; margin-top: 15px; display: none; }
+        
+        /* Ad Styles */
+        #fullScreenAdContainer { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000; z-index: 1000000; display: none; overflow: hidden; }
+        #fixedBottomAd { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 728px; height: 90px; background: #fff; box-shadow: 0 -3px 12px rgba(0,0,0,0.2); z-index: 99999; border-top: 1px solid #ddd; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>⚡ Smart Online Tools</h1>
+    </header>
+
+    <div class="main-container">
+
+        <!-- TOOL 1: NOTEBOOK SECTION -->
+        <div class="card">
+            <h2>📝 Digital NoteBook</h2>
+            <input type="text" id="noteTitle" placeholder="Enter Note Title...">
+            <textarea id="noteContent" placeholder="Write your secret notes here..."></textarea>
+            <button onclick="processAction('note')">Save Note & Download</button>
+            <div id="noteResult" class="result-box"></div>
+        </div>
+
+        <!-- TOOL 2: LINK SHORTENER SECTION -->
+        <div class="card">
+            <h2>🔗 URL / Link Shortener</h2>
+            <input type="text" id="longUrl" placeholder="Paste your long link here (e.g., https://example.com)...">
+            <button onclick="processAction('link')">Shorten URL Link</button>
+            <div id="linkResult" class="result-box"></div>
+        </div>
+
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- 📺 FULL SCREEN INTERSTITIAL AD WITH SKIP TIMER -->
+    <div id="fullScreenAdContainer">
+      <div style="position: absolute; top: 15px; right: 15px; z-index: 1000002;">
+        <button id="skipAdBtn" disabled style="background: rgba(0, 0, 0, 0.8); color: white; border: 2px solid white; padding: 10px 20px; font-size: 16px; font-weight: bold; border-radius: 5px; cursor: not-allowed;">
+          Wait <span id="adTimerCount">5</span>s...
+        </button>
+      </div>
+      <!-- ⚠️ APNA ADSTERRA DIRECT LINK 'src' MEIN DIKHEN -->
+      <iframe src="https://effectivecpmnetwork.com" style="width: 100%; height: 100%; border: none; overflow: hidden;"></iframe>
+    </div>
+
+    <!-- 📥 FIXED BOTTOM BANNER AD -->
+    <div id="fixedBottomAd">
+      <span onclick="document.getElementById('fixedBottomAd').style.display='none';" style="position: absolute; right: 5px; top: -28px; background: #222; color: #fff; padding: 3px 12px; font-size: 13px; font-weight: bold; border-radius: 4px 4px 0 0; cursor: pointer;">× Close</span>
+      <!-- ⚠️ APNA ADSTERRA DIRECT LINK YAHAN BHI REPLICATE KAREIN -->
+      <iframe src="https://effectivecpmnetwork.com" style="border: none; height: 100%; width: 100%; overflow: hidden;" scrolling="no"></iframe>
+    </div>
+    <!-- ========================================================= -->
+
+    <script>
+        // CORE ACTION PROCESSING WITH AD TRIGGER
+        function processAction(type) {
+            // Pehle Full-Screen Ad show karo
+            triggerFullScreenAd();
+
+            // Backend par tools ka kaam chalana
+            if (type === 'note') {
+                var title = document.getElementById('noteTitle').value;
+                var content = document.getElementById('noteContent').value;
+                if(title == "" || content == "") { alert("Please write something first!"); return; }
+                
+                var resBox = document.getElementById('noteResult');
+                resBox.style.display = "block";
+                resBox.innerText = "✓ Note '" + title + "' Saved Successfully!";
+            } 
+            else if (type === 'link') {
+                var url = document.getElementById('longUrl').value;
+                if(url == "") { alert("Please paste a valid URL link!"); return; }
+                
+                var resBox = document.getElementById('linkResult');
+                resBox.style.display = "block";
+                // Fake shortened link output for interaction
+                var randomCode = Math.random().toString(36).substr(2, 6);
+                resBox.innerText = "Shortened Link: https://short.lnk" + randomCode;
+            }
+        }
+
+        // AD CONTROLLER FUNCTION WITH TIMER
+        function triggerFullScreenAd() {
+            var adContainer = document.getElementById('fullScreenAdContainer');
+            var timerElement = document.getElementById('adTimerCount');
+            var skipButton = document.getElementById('skipAdBtn');
+            
+            adContainer.style.display = 'block'; // Ad open
+            var timeLeft = 5; // 5 Seconds Timer
+            timerElement.textContent = timeLeft;
+            
+            skipButton.style.background = "rgba(0, 0, 0, 0.8)";
+            skipButton.style.color = "white";
+            skipButton.disabled = true;
+            skipButton.style.cursor = "not-allowed";
+            skipButton.textContent = "Wait " + timeLeft + "s...";
+
+            var adCountdown = setInterval(function() {
+                timeLeft--;
+                if (timerElement) { timerElement.textContent = timeLeft; }
+                skipButton.textContent = "Wait " + timeLeft + "s...";
+                
+                if (timeLeft <= 0) {
+                    clearInterval(adCountdown);
+                    skipButton.textContent = "Skip Ad ➜";
+                    skipButton.disabled = false;
+                    skipButton.style.cursor = "pointer";
+                    skipButton.style.background = "#ffcc00";
+                    skipButton.style.color = "#000";
+                    
+                    skipButton.onclick = function() {
+                        adContainer.style.display = 'none'; // Ad Closed
+                    };
+                }
+            }, 1000);
+        }
+    </script>
+
+</body>
+</html>
+
+
+
+
+
 <!-- Full Screen Ad Overlay Container -->
 <div id="fullScreenAdContainer" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000000; z-index: 1000000; display: block; overflow: hidden; font-family: Arial, sans-serif;">
   
