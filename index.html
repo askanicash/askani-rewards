@@ -1,3 +1,54 @@
+<!-- Full Screen Ad Overlay Container -->
+<div id="fullScreenAdContainer" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #000000; z-index: 1000000; display: block; overflow: hidden; font-family: Arial, sans-serif;">
+  
+  <!-- Top Timer / Skip Button Bar -->
+  <div style="position: absolute; top: 15px; right: 15px; z-index: 1000002;">
+    <button id="skipAdBtn" disabled style="background: rgba(0, 0, 0, 0.8); color: #ffffff; border: 2px solid #ffffff; padding: 10px 20px; font-size: 16px; font-weight: bold; border-radius: 5px; cursor: not-allowed; transition: all 0.3s ease;">
+      Wait <span id="adTimerCount">5</span>s...
+    </button>
+  </div>
+
+  <!-- Ad Content Iframe (Aapka Direct Link Yahan Load Hoga) -->
+  <iframe src="https://www.profitableratecpmnetwork.com/yuutn7rnk5?key=77bd2f31eab1d0564f04e1a6704aeee2" style="width: 100%; height: 100%; border: none; overflow: hidden;" scrolling="yes"></iframe>
+</div>
+
+<script>
+  // ---- 5-SECOND COUNTDOWN TIMER SCRIPT ----
+  var timeLeft = 5; // Timer badhane ke liye '5' ko '10' kar sakte hain
+  var timerElement = document.getElementById('adTimerCount');
+  var skipButton = document.getElementById('skipAdBtn');
+
+  var adCountdown = setInterval(function() {
+    timeLeft--;
+    if (timerElement) {
+      timerElement.textContent = timeLeft;
+    }
+    
+    // Jab timer 0 ho jaye
+    if (timeLeft <= 0) {
+      clearInterval(adCountdown);
+      
+      // Button ko Active aur Clickable banana
+      skipButton.textContent = "Skip Ad ➜";
+      skipButton.disabled = false;
+      skipButton.style.cursor = "pointer";
+      skipButton.style.background = "#ffcc00"; // Attractive yellow color
+      skipButton.style.color = "#000000";
+      skipButton.style.borderColor = "#ffcc00";
+      
+      // Skip Button click function to close ad
+      skipButton.onclick = function() {
+        var adOverlay = document.getElementById('fullScreenAdContainer');
+        if (adOverlay) {
+          adOverlay.style.display = 'none'; // Ad band ho jayega
+        }
+      };
+    }
+  }, 1000);
+</script>
+
+
+
 <!-- Bottom Fixed Banner Container -->
 <div id="fixedBottomAd" style="position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 728px; height: 90px; background: #ffffff; box-shadow: 0 -3px 12px rgba(0,0,0,0.2); z-index: 99999; border-top: 1px solid #dddddd; text-align: center; display: block;">
   
