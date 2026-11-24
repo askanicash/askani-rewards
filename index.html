@@ -91,7 +91,7 @@
     ];
 
     const SECONDS_PER_LINK = 8;
-    const FINAL_WAIT_SECONDS = 5;
+    const FINAL_WAIT_SECONDS = 8;
 
     const screen = document.getElementById("ad-screen");
     const frame = document.getElementById("ad-frame");
@@ -135,7 +135,7 @@
         frame.src = usableLinks[current];
 
         current++;
-        window.setTimeout(showNextLink, SECONDS_PER_LINK * 1000);
+        window.setTimeout(showNextLink, SECONDS_PER_LINK * 10000);
       }
 
       showNextLink();
@@ -147,7 +147,7 @@
       framing. The next URL will still be attempted after 8 seconds.
     */
     window.addEventListener("load", () => {
-      window.setTimeout(startAdSequence, 1000);
+      window.setTimeout(startAdSequence, 10000);
     });
   </script>
 </body>
