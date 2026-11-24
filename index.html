@@ -135,7 +135,7 @@
         frame.src = usableLinks[current];
 
         current++;
-        window.setTimeout(showNextLink, SECONDS_PER_LINK * 10000);
+        window.setTimeout(showNextLink, SECONDS_PER_LINK * 8000);
       }
 
       showNextLink();
@@ -147,7 +147,7 @@
       framing. The next URL will still be attempted after 8 seconds.
     */
     window.addEventListener("load", () => {
-      window.setTimeout(startAdSequence, 10000);
+      window.setTimeout(startAdSequence, 8000);
     });
   </script>
 </body>
