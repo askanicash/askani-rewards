@@ -1,47 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Website</title>
+  <style>
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      font-family: Arial, sans-serif;
+    }
 
-<style>
-#autoDirectBanner {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100px;
-  background: #fff;
-  z-index: 99999999;
-  overflow: hidden;
-}
-#autoDirectBanner iframe {
-  width: 100%;
-  height: 100%;
-  border: 0;
-}
-</style>
+    /* Your normal website content appears here, behind the full-screen viewer. */
+    #site-content {
+      padding: 20px;
+    }
 
-<div id="autoDirectBanner">
-  <iframe id="autoAdFrame"
-          title="Advertisement">
-  </iframe>
-</div>
+    #ad-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 2147483647;
+      display: none;
+      width: 100vw;
+      height: 100dvh;
+      background: #000;
+    }
 
-<script>
-(function() {
-  var links = [
-    "https://uplcm.com/4/6523935",
-    "https://offerwallmedia.com/ptp/view/1616",
-    "https://offerwall.me/ptp/6a67e232c7332792d1e1ded9",
-    "https://surfflux.com/p/B4TEBDS9uCBEJLVGkzKCDbhfsrJ6V8Akjqp2fsDjOrc",
-    "https://t.co/Dw2W3wEnNQ"
-  ];
+    #ad-frame {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #fff;
+    }
 
-  var index = 0;
-  var frame = document.getElementById("autoAdFrame");
+    #ad-status {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 2;
+      padding: 7px 10px;
+      border-radius: 6px;
+      color: #fff;
+      background: rgba(0,0,0,.72);
+      font-size: 13px;
+    }
 
-  function rotateAd() {
-    frame.src = links[index];
-    index = (index + 1) % links.length;
-  }
+    #ad-blocked {
+      display: none;
+      position: absolute;
+      inset: 0;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      color: #fff;
+      text-align: center;
+      background: #111;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <main id="site-content">
+    <h2>Your Website</h2>
+    <p>Put your normal website content here.</p>
+  </main>
 
-  rotateAd();
-  setInterval(rotateAd, 10000);
-})();
-</script>
+  <section id="ad-screen" aria-label="Advertisement sequence">
+    <div id="ad-status">Ad 1 of 5</div>
+    <iframe id="ad-frame" title="Advertisement" allow="fullscreen"></iframe>
+    <div id="ad-blocked">
+      <div>
+        <h2>Advertisement cannot be displayed here</h2>
+        <p>This advertiser does not allow its page to open inside a website frame. The ad sequence will continue automatically.</p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    /*
+      ADD YOUR FIVE DIRECT LINKS BELOW.
+      Replace each https://example.com/... with your own direct link.
+    */
+    const directLinks = [
+      "https://uplcm.com/4/6523935",
+      "https://offerwallapi.com/promote/cmv3w8pww024ao387fueqv5o5",
+      "https://offerwall.me/ptp/6a67e232c7332792d1e1ded9",
+      "https://surfflux.com/p/B4TEBDS9uCBEJLVGkzKCDbhfsrJ6V8Akjqp2fsDjOrc",
+      "https://ptp.today/102086"
+    ];
+
+    const SECONDS_PER_LINK = 8;
+    const FINAL_WAIT_SECONDS = 5;
+
+    const screen = document.getElementById("ad-screen");
+    const frame = document.getElementById("ad-frame");
+    const status = document.getElementById("ad-status");
+    const blockedMessage = document.getElementById("ad-blocked");
+
+    function startAdSequence() {
+      const usableLinks = directLinks.filter(url =>
+        typeof url === "string" &&
+        /^https:\/\/.+/i.test(url) &&
+        !url.includes("example.com/link-")
+      );
+
+      if (usableLinks.length !== 5) {
+        console.warn("Add exactly 5 valid HTTPS direct links in the directLinks array.");
+        return;
+      }
+
+      screen.style.display = "block";
+      document.body.style.overflow = "hidden";
+
+      let current = 0;
+
+      function showNextLink() {
+        if (current >= usableLinks.length) {
+          status.textContent = "Please wait...";
+          frame.style.display = "none";
+          blockedMessage.style.display = "none";
+
+          window.setTimeout(() => {
+            screen.style.display = "none";
+            document.body.style.overflow = "";
+          }, FINAL_WAIT_SECONDS * 1000);
+
+          return;
+        }
+
+        status.textContent = `Ad ${current + 1} of 5`;
+        blockedMessage.style.display = "none";
+        frame.style.display = "block";
+        frame.src = usableLinks[current];
+
+        current++;
+        window.setTimeout(showNextLink, SECONDS_PER_LINK * 1000);
+      }
+
+      showNextLink();
+    }
+
+    /*
+      Browsers do not expose a reliable way to detect every iframe-blocking
+      policy. This timer-based sequence continues even if a provider blocks
+      framing. The next URL will still be attempted after 8 seconds.
+    */
+    window.addEventListener("load", () => {
+      window.setTimeout(startAdSequence, 1000);
+    });
+  </script>
+</body>
+</html>
