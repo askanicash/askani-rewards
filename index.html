@@ -84,14 +84,14 @@
     */
     const directLinks = [
       "https://uplcm.com/4/6523935",
-      "https://offerwallapi.com/promote/cmv3w8pww024ao387fueqv5o5",
-      "https://offerwall.me/ptp/6a67e232c7332792d1e1ded9",
+      "https://t.co/xxueklQpcD",
+      "https://t.co/Dw2W3wEnNQ",
       "https://surfflux.com/p/B4TEBDS9uCBEJLVGkzKCDbhfsrJ6V8Akjqp2fsDjOrc",
       "https://ptp.today/102086"
     ];
 
     const SECONDS_PER_LINK = 8;
-    const FINAL_WAIT_SECONDS = 8;
+    const FINAL_WAIT_SECONDS = 5;
 
     const screen = document.getElementById("ad-screen");
     const frame = document.getElementById("ad-frame");
@@ -135,7 +135,7 @@
         frame.src = usableLinks[current];
 
         current++;
-        window.setTimeout(showNextLink, SECONDS_PER_LINK * 8000);
+        window.setTimeout(showNextLink, SECONDS_PER_LINK * 7000);
       }
 
       showNextLink();
@@ -147,7 +147,7 @@
       framing. The next URL will still be attempted after 8 seconds.
     */
     window.addEventListener("load", () => {
-      window.setTimeout(startAdSequence, 8000);
+      window.setTimeout(startAdSequence, 7000);
     });
   </script>
 </body>
